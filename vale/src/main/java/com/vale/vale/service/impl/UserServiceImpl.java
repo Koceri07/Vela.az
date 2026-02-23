@@ -53,6 +53,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ApiResponse softDeleteById(Long id) {
+        log.info("Action.softDeleteById.start for id {}", id);
+
+        log.info("Action.softDeleteById.end for id {}", id);
         return null;
     }
 
