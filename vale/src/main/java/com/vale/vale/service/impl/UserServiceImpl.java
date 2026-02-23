@@ -41,7 +41,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ApiResponse getAll() {
-        return null;
+        log.info("Action.getAll.start");
+        var responses = userRepository.findAll()
+                        .stream()
+                                .map(UserMapper.INStANCE::toResponse)
+                                        .toList();
+        ApiResponse apiResponse = new ApiResponse(responses);
+        log.info("Action.getAll.end");
+        return apiResponse;
     }
 
     @Override
