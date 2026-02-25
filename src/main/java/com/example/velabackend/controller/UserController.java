@@ -4,7 +4,7 @@ import com.example.velabackend.dto.request.UserRequest;
 import com.example.velabackend.dto.response.ApiResponse;
 import com.example.velabackend.dto.response.UserResponse;
 import com.example.velabackend.service.UserService;
-import lombok.Data;
+import jakarta.validation.Valid; // Vacibdir!
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +20,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<UserResponse>> createUser(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<ApiResponse<UserResponse>> createUser(@Valid @RequestBody UserRequest userRequest) {
         UserResponse response = userService.createUser(userRequest);
         return new ResponseEntity<>(
                 ApiResponse.success(response, "User created successfully"),
@@ -45,7 +45,7 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<UserResponse>> updateUser(
             @PathVariable Long id,
-            @RequestBody UserRequest updateRequest) {
+            @Valid @RequestBody UserRequest updateRequest) {
         UserResponse response = userService.updateUser(id, updateRequest);
         return ResponseEntity.ok(ApiResponse.success(response, "User updated successfully"));
     }
