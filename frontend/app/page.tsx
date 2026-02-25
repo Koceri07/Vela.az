@@ -1,10 +1,13 @@
 import Container from "@/components/common/Container";
 
+import Image from "next/image";
+
+
+
 export default function Home() {
   return (
     <Container>
-      <h1 className="bg-[#925d5d]">vale.az</h1>
-
+ <h1>salam</h1>
     </Container>
   );
 }
