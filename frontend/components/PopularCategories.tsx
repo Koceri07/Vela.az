@@ -1,0 +1,73 @@
+"use client";
+
+import React from "react";
+import { useRouter } from "next/navigation";
+
+interface Category {
+  title: string;
+  count: number;
+  image: string;
+  link: string;
+}
+
+const PopularCategories = () => {
+  const router = useRouter();
+  const categories: Category[] = [
+    {
+      title: "Gəlinliklər",
+      count: 124,
+      image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=400&h=500",
+      link: "/collections?cat=bridal",
+    },
+    {
+      title: "Ziyafət Geyimləri",
+      count: 256,
+      image: "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&fit=crop&w=400&h=500",
+      link: "/collections?cat=evening",
+    },
+    {
+      title: "Kişi Kostyumları",
+      count: 89,
+      image: "https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=400&h=500",
+      link: "/collections?cat=mens",
+    },
+    {
+      title: "Uşaq Kolleksiyası",
+      count: 67,
+      image: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=400&h=500",
+      link: "/collections?cat=kids",
+    },
+  ];
+
+  return (
+    <section className="py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-4">
+        <h2 className="text-center text-4xl font-serif mb-2">Populyar Kateqoriyalar</h2>
+        <p className="text-center text-gray-500 mb-12">Hər münasibət üçün mükəmməl seçim</p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {categories.map((cat) => (
+            <div
+              key={cat.title}
+              className="group cursor-pointer relative overflow-hidden rounded-lg h-80"
+              onClick={() => router.push(cat.link)}
+            >
+              <img
+                src={cat.image}
+                alt={cat.title}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute bottom-4 left-4 text-white">
+                <h3 className="text-xl font-semibold">{cat.title}</h3>
+                <p className="text-sm">{cat.count} məhsul</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default PopularCategories;
