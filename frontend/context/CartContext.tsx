@@ -1,5 +1,7 @@
 "use client";
 
+// import React-a ehtiyac yoxdur
+// Wishlist üçün ayrı context yarat
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 export interface CartItem {
@@ -43,7 +45,16 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <CartContext.Provider value={{ cart, wishlist, addToCart, addToWishlist, removeFromCart, removeFromWishlist }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        wishlist,
+        addToCart,
+        addToWishlist,
+        removeFromCart,
+        removeFromWishlist,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

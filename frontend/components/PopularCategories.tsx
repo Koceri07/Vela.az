@@ -1,5 +1,6 @@
 "use client";
 
+// import React-a ehtiyac yoxdur
 import React from "react";
 import { useRouter } from "next/navigation";
 
@@ -16,25 +17,29 @@ const PopularCategories = () => {
     {
       title: "Gəlinliklər",
       count: 124,
-      image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=400&h=500",
+      image:
+        "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=400&h=500",
       link: "/collections?cat=bridal",
     },
     {
       title: "Ziyafət Geyimləri",
       count: 256,
-      image: "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&fit=crop&w=400&h=500",
+      image:
+        "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&fit=crop&w=400&h=500",
       link: "/collections?cat=evening",
     },
     {
       title: "Kişi Kostyumları",
       count: 89,
-      image: "https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=400&h=500",
+      image:
+        "https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=400&h=500",
       link: "/collections?cat=mens",
     },
     {
       title: "Uşaq Kolleksiyası",
       count: 67,
-      image: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=400&h=500",
+      image:
+        "https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=400&h=500",
       link: "/collections?cat=kids",
     },
   ];
@@ -42,8 +47,12 @@ const PopularCategories = () => {
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-center text-4xl font-serif mb-2">Populyar Kateqoriyalar</h2>
-        <p className="text-center text-gray-500 mb-12">Hər münasibət üçün mükəmməl seçim</p>
+        <h2 className="text-center text-4xl font-serif mb-2">
+          Populyar Kateqoriyalar
+        </h2>
+        <p className="text-center text-gray-500 mb-12">
+          Hər münasibət üçün mükəmməl seçim
+        </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {categories.map((cat) => (
@@ -52,6 +61,7 @@ const PopularCategories = () => {
               className="group cursor-pointer relative overflow-hidden rounded-lg h-80"
               onClick={() => router.push(cat.link)}
             >
+              {/* Category componenti yarat */}
               <img
                 src={cat.image}
                 alt={cat.title}

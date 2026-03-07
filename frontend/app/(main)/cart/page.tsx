@@ -1,5 +1,6 @@
 "use client";
 
+// import React-a ehtiyac yoxdur
 import React from "react";
 import Link from "next/link";
 import { Trash2 } from "lucide-react";
@@ -26,6 +27,7 @@ export default function CartPage() {
           <div className="lg:col-span-2 space-y-6">
             {cart.map((item) => (
               <div key={item.id} className="flex gap-4 p-4 border rounded-lg">
+                {/* CartItem componenti yarat */}
                 <img
                   src={item.image}
                   alt={item.name}

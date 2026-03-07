@@ -124,3 +124,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+/*
+font-serif fərqlidir, "Playfair Display", Georgia, serif deyil.
+font-sans fərqlidir, Montserrat, system-ui, sans-serif deyil.
+primary color yoxdur.
+*/

@@ -1,5 +1,6 @@
 "use client";
 
+// import React-a ehtiyac yoxdur
 import React from "react";
 import Link from "next/link";
 import { Trash2, ShoppingBag } from "lucide-react";
@@ -23,6 +24,7 @@ export default function WishlistPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {wishlist.map((item) => (
             <div key={item.id} className="border rounded-lg overflow-hidden">
+              {/* WishlistItem componenti yarat */}
               <img
                 src={item.image}
                 alt={item.name}

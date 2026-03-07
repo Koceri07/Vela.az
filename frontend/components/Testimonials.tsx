@@ -1,6 +1,7 @@
 "use client";
 
-import React from 'react';
+// import React-a ehtiyac yoxdur
+import React from "react";
 
 interface Testimonial {
   text: string;
@@ -36,10 +37,13 @@ const Testimonials = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {data.map((item, idx) => (
             <div key={idx} className="bg-white p-8 rounded-lg shadow-lg">
+              {/* Testimonial componenti yarat */}
               <p className="text-[#A37A7A] italic mb-6">"{item.text}"</p>
               <div className="flex items-center gap-4">
                 <div className="w-10 h-10 rounded-full bg-[#E8DCD8] flex items-center justify-center">
-                  <span className="text-[#A37A7A] font-bold">{item.name.charAt(0)}</span>
+                  <span className="text-[#A37A7A] font-bold">
+                    {item.name.charAt(0)}
+                  </span>
                 </div>
                 <div>
                   <p className="font-semibold text-black">{item.name}</p>

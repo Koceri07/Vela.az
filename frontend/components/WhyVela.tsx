@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React from "react";
 
 interface Feature {
   icon: React.ReactNode;
@@ -111,13 +111,12 @@ const WhyVela = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {features.map((f, idx) => (
             <div key={idx} className="flex flex-col items-center text-center">
+              {/* Feature componenti yarat */}
               {f.icon}
               <h3 className="mt-4 text-xl font-semibold text-black">
                 {f.title}
               </h3>
-              <p className="mt-2 text-[#A37A7A] text-sm">
-                {f.description}
-              </p>
+              <p className="mt-2 text-[#A37A7A] text-sm">{f.description}</p>
             </div>
           ))}
         </div>
