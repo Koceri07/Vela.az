@@ -1,4 +1,3 @@
-
 "use client";
 import { useState } from "react";
 import RegisterForm from "../(auth)/register/page";
@@ -23,7 +22,7 @@ export default function HomePage() {
       >
         Open Login Form
       </button>
-
+      {/* Modallar üçün ayrı component yarat. Page-lərlə dizaynları fərqli olacaq */}
       {showRegister && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <RegisterForm onClose={() => setShowRegister(false)} />

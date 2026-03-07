@@ -13,7 +13,7 @@ export default function LoginForm() {
     e.preventDefault();
 
     const storedUser = localStorage.getItem("user");
-
+    // adi alert yox, Sweet Alert, ya da alternativini istifadə edin
     if (!storedUser) {
       alert("Belə bir istifadəçi tapılmadı!");
       return;
@@ -36,6 +36,7 @@ export default function LoginForm() {
         onSubmit={handleSubmit}
         className="relative bg-white p-8 rounded-lg shadow-2xl w-full max-w-md"
       >
+        {/* Səhifədir deyə X-ə ehtiyac yoxdur  */}
         <button
           type="button"
           onClick={() => router.push("/")}
@@ -47,6 +48,7 @@ export default function LoginForm() {
         <h2 className="text-2xl font-bold text-center mb-6">Daxil olun</h2>
 
         <div className="mb-4">
+          {/* E-maillə birlikdə telefon nömrəsi ilə də giriş mümkün olmalıdır */}
           <label htmlFor="email" className="block text-gray-700 mb-2">
             E-poçt ünvanı
           </label>

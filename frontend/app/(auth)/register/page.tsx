@@ -13,7 +13,7 @@ export default function RegisterForm() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    // adi alert yox, Sweet Alert, ya da alternativini istifadə edin
     if (!acceptTerms) {
       alert("Davam etmək üçün Şərtlər və Qaydaları qəbul etməlisiniz.");
       return;
@@ -38,6 +38,7 @@ export default function RegisterForm() {
         onSubmit={handleSubmit}
         className="relative bg-white p-8 rounded-lg shadow-2xl w-full max-w-md"
       >
+        {/* Səhifədir deyə X-ə ehtiyac yoxdur  */}
         <button
           type="button"
           onClick={() => router.push("/")}
@@ -63,7 +64,7 @@ export default function RegisterForm() {
             required
           />
         </div>
-
+        {/* Telefon nömrəsi üçün də input lazımdır */}
         <div className="mb-4">
           <label htmlFor="email" className="block text-gray-700 mb-2">
             E-poçt ünvanı
