@@ -1,7 +1,5 @@
 "use client";
 
-// import React-a ehtiyac yoxdur
-// Wishlist üçün ayrı context yarat
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 export interface CartItem {
@@ -13,10 +11,10 @@ export interface CartItem {
 
 interface CartContextType {
   cart: CartItem[];
-  wishlist: CartItem[];
   addToCart: (item: CartItem) => void;
-  addToWishlist: (item: CartItem) => void;
   removeFromCart: (id: number) => void;
+  wishlist: CartItem[];
+  addToWishlist: (item: CartItem) => void;
   removeFromWishlist: (id: number) => void;
 }
 
@@ -30,14 +28,16 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setCart((prev) => [...prev, item]);
   };
 
-  const addToWishlist = (item: CartItem) => {
-    if (!wishlist.find((w) => w.id === item.id)) {
-      setWishlist((prev) => [...prev, item]);
-    }
-  };
-
   const removeFromCart = (id: number) => {
     setCart((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const addToWishlist = (item: CartItem) => {
+    setWishlist((prev) => {
+      // Prevent duplicates
+      if (prev.find((w) => w.id === item.id)) return prev;
+      return [...prev, item];
+    });
   };
 
   const removeFromWishlist = (id: number) => {
@@ -48,10 +48,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     <CartContext.Provider
       value={{
         cart,
-        wishlist,
         addToCart,
-        addToWishlist,
         removeFromCart,
+        wishlist,
+        addToWishlist,
         removeFromWishlist,
       }}
     >
@@ -64,6 +64,14 @@ export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) {
     throw new Error("useCart must be used within CartProvider");
+  }
+  return context;
+};
+
+export const useWishlist = () => {
+  const context = useContext(CartContext);
+  if (!context) {
+    throw new Error("useWishlist must be used within CartProvider");
   }
   return context;
 };

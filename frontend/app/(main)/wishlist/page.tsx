@@ -1,13 +1,12 @@
 "use client";
 
-// import React-a ehtiyac yoxdur
-import React from "react";
 import Link from "next/link";
 import { Trash2, ShoppingBag } from "lucide-react";
 import { useCart } from "@/context/CartContext";
-
+import { useWishlist } from "@/context/CartContext";
 export default function WishlistPage() {
-  const { wishlist, removeFromWishlist, addToCart } = useCart();
+  const { addToCart } = useCart();
+  const { wishlist, removeFromWishlist } = useWishlist();
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-20">
@@ -17,7 +16,7 @@ export default function WishlistPage() {
         <div className="text-center py-20">
           <p className="text-gray-500 mb-4">Beğendikləriniz boşdur</p>
           <Link href="/collections" className="text-[#a37a7a] hover:underline">
-            Ağlayaqları kəşf edin
+            Kolleksiyaları kəşf edin
           </Link>
         </div>
       ) : (
