@@ -1,5 +1,4 @@
-// import React-a ehtiyac yoxdur
-import React from "react";
+
 import Link from "next/link";
 import { Mail, Instagram, Facebook, Send, MessageCircle } from "lucide-react";
 
