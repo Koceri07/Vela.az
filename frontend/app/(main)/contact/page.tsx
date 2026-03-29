@@ -2,20 +2,16 @@
 // import React-a ehtiyac yoxdur
 import React from "react";
 import { useRouter } from "next/navigation";
-// React icons yüklənməyib, amma burada işlənib deyə xəta verir.
 import { CiMail } from "react-icons/ci";
 import { CiLocationOn } from "react-icons/ci";
 import { BsTelephoneInbound } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
-
-// Struktur yaxşıdır, amma birləşdiriləndə dizayn editləri lazım olacaq.
-
 const Page = () => {
   const router = useRouter();
 
   return (
     <div className="relative w-[95%] max-w-6xl shadow-2xl mx-auto my-10 rounded-xl p-6">
-      {/* Bu modal yox, səhifədir deyə ehtiyac yoxdur X-ə  */}
+
       <div
         className="text-[28px] absolute right-6 top-6 cursor-pointer hover:text-red-500 transition"
         onClick={() => router.push("/")}

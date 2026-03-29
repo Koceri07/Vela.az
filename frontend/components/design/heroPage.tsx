@@ -57,7 +57,7 @@ const HeroPage = () => {
       {/* Sağ aşağı küncdə xırda detal (Opsional) */}
       <div className="absolute bottom-10 right-10 hidden lg:block">
         <div className="flex items-center gap-4 text-white/50 text-[10px] tracking-[0.5em] uppercase vertical-rl rotate-180">
-          <div className="w-[1px] h-20 bg-white/30"></div>
+          <div className="w-px h-20 bg-white/30"></div>
           Scroll Down
         </div>
       </div>

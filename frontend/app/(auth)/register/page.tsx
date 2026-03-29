@@ -2,8 +2,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+type Props = {
+  onClose: () => void;
+};
 
-export default function RegisterForm() {
+
+export default function RegisterForm({ onClose }: Props) {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

@@ -1,7 +1,5 @@
-// import React-a ehtiyac yoxdur
-import React from "react";
-// ShoppingBox
-import { BinocularsIcon, ShoppingBag, SlidersHorizontal } from "lucide-react";
+
+import { BinocularsIcon,  SlidersHorizontal } from "lucide-react";
 import { mockProducts } from "./productSlice";
 
 const CollectionsPage = () => {
@@ -21,7 +19,7 @@ const CollectionsPage = () => {
         </div>
         <div className="mt-4 md:mt-0 flex items-center gap-4 text-sm font-medium text-gray-600">
           <span>{items.length} məhsul tapıldı</span>
-          <div className="h-4 w-[1px] bg-gray-300"></div>
+          <div className="h-4 w-px bg-gray-300"></div>
           <button className="flex items-center gap-2 hover:text-black transition">
             <SlidersHorizontal size={18} /> Sıralama
           </button>
@@ -30,7 +28,7 @@ const CollectionsPage = () => {
 
       <div className="flex flex-col lg:flex-row gap-12">
         {/* Sol tərəf: Filtr Paneli */}
-        <aside className="w-full lg:w-64 flex-shrink-0 space-y-10">
+        <aside className="w-full lg:w-64 shrink-0 space-y-10">
           {/* Kateqoriyalar */}
           <div>
             <h3 className="text-sm font-bold uppercase tracking-widest mb-6 border-l-2 border-black pl-3">
@@ -95,7 +93,7 @@ const CollectionsPage = () => {
               <div key={product.id} className="group cursor-pointer">
                 {/* Şəkil sahəsi */}
                 {/* Product componenti yarat */}
-                <div className="relative aspect-[3/4] overflow-hidden bg-gray-100 rounded-sm">
+                <div className="relative aspect-3/4 overflow-hidden bg-gray-100 rounded-sm">
                   <img
                     src={product.image}
                     alt={product.name}

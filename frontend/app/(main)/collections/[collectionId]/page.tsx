@@ -1,5 +1,6 @@
 import { BinocularsIcon, ShoppingBag } from "lucide-react";
-import { mockProducts } from "./productSlice";
+import { mockProducts } from "../productSlice";
+
 
 export default function Page() {
   const items = mockProducts;
@@ -27,7 +28,7 @@ export default function Page() {
             className="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
           >
             {/* CollectionItem componenti yarat */}
-            <div className="aspect-[3/4] overflow-hidden bg-gray-200">
+            <div className="aspect-3/4 overflow-hidden bg-gray-200">
               <img
                 src={product.image}
                 alt={product.name}
