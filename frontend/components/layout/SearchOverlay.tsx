@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Search as SearchIcon, X, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Product } from "@/app/(main)/collections/productSlice";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface SearchOverlayProps {
   isOpen: boolean;
@@ -14,6 +15,7 @@ interface SearchOverlayProps {
 const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose, products }) => {
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const { t, language } = useLanguage();
 
   // Auto-focus input when opened
   useEffect(() => {
@@ -54,7 +56,7 @@ const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose, products
           <input
             ref={inputRef}
             type="text"
-            placeholder="Nə axtarırsınız? (məs: Atlas, Gəlinlik...)"
+            placeholder={t("search.placeholder")}
             className="w-full bg-transparent border-none outline-none text-xl md:text-2xl font-serif text-gray-800 placeholder:text-gray-300"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -73,9 +75,9 @@ const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose, products
         <div className="max-w-4xl mx-auto">
           {query.trim() === "" ? (
             <div className="space-y-8 animate-in slide-in-from-bottom-4 duration-500">
-              <h3 className="text-xs font-black uppercase tracking-[0.2em] text-gray-400">Populyar Axtarışlar</h3>
+              <h3 className="text-xs font-black uppercase tracking-[0.2em] text-gray-400">{t("search.popular")}</h3>
               <div className="flex flex-wrap gap-3">
-                {["Ziyafət Geyimi", "Gəlinlik", "Atlas", "Kostyum", "Uşaq"].map(tag => (
+                {((t("search.tags") as any as string[]) || ["Ziyafət Geyimi", "Gəlinlik", "Atlas", "Kostyum", "Uşaq"]).map(tag => (
                   <button 
                     key={tag}
                     onClick={() => setQuery(tag)}
@@ -90,7 +92,7 @@ const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose, products
             <div className="space-y-10">
               <div className="flex items-end justify-between border-b border-gray-100 pb-4">
                 <h3 className="text-sm font-black uppercase tracking-widest text-[#8E6969]">
-                  Nəticələr ({filteredProducts.length})
+                  {t("search.results")} ({filteredProducts.length})
                 </h3>
               </div>
 
@@ -108,11 +110,11 @@ const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose, products
                         <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
                       </div>
                       <div className="flex flex-col justify-center space-y-2">
-                        <span className="text-[10px] uppercase font-bold tracking-widest text-stone-400">{p.category}</span>
-                        <h4 className="text-lg font-serif font-bold text-gray-900 group-hover:text-[#8E6969] transition-colors">{p.name}</h4>
-                        <p className="text-sm font-bold text-[#8E6969]">{p.rentPrice} AZN <span className="text-[10px] text-stone-400 font-medium">/ kirayə</span></p>
+                        <span className="text-[10px] uppercase font-bold tracking-widest text-stone-400">{((p as any)[`category_${language.toLowerCase()}`]) || p.category}</span>
+                        <h4 className="text-lg font-serif font-bold text-gray-900 group-hover:text-[#8E6969] transition-colors">{((p as any)[`name_${language.toLowerCase()}`]) || p.name}</h4>
+                        <p className="text-sm font-bold text-[#8E6969]">{p.rentPrice} AZN <span className="text-[10px] text-stone-400 font-medium">{t("search.per_rent")}</span></p>
                         <div className="flex items-center text-[10px] font-black uppercase tracking-widest text-gray-400 group-hover:text-black mt-2 transition-colors">
-                          Məhsula bax <ArrowRight size={12} className="ml-1 group-hover:translate-x-1 transition-transform" />
+                          {t("search.view_product")} <ArrowRight size={12} className="ml-1 group-hover:translate-x-1 transition-transform" />
                         </div>
                       </div>
                     </Link>
@@ -123,7 +125,7 @@ const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose, products
                   <div className="w-20 h-20 bg-stone-50 rounded-full flex items-center justify-center text-stone-200">
                     <SearchIcon size={32} />
                   </div>
-                  <p className="text-gray-400 font-serif italic italic text-lg">"{query}" ilə bağlı məhsul tapılmadı</p>
+                  <p className="text-gray-400 font-serif italic italic text-lg">"{query}" {t("search.not_found")}</p>
                 </div>
               )}
             </div>

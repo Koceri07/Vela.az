@@ -5,9 +5,11 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { mockProducts } from "@/app/(main)/collections/productSlice";
 import ProductCard from "@/components/common/ProductCard";
+import { useLanguage } from "@/context/LanguageContext";
 
 const SelectedItems = () => {
   const router = useRouter();
+  const { t } = useLanguage();
   const items = mockProducts.slice(0, 4);
 
   return (
@@ -15,14 +17,14 @@ const SelectedItems = () => {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-end mb-12">
           <div className="space-y-2">
-            <h2 className="text-4xl font-serif font-bold text-[#4A3728]">Seçilmiş Məhsullar</h2>
-            <p className="text-gray-500 text-sm italic">Sizin üçün özəl olaraq seçdiyimiz ən yeni modellər</p>
+            <h2 className="text-4xl font-serif font-bold text-[#4A3728]">{t("home.sel_title")}</h2>
+            <p className="text-gray-500 text-sm italic">{t("home.sel_sub")}</p>
           </div>
           <button
             onClick={() => router.push("/collections")}
             className="group flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-[#8E6969] hover:text-[#725454] transition-all"
           >
-            <span>Hamısını Gör</span>
+            <span>{t("home.see_all")}</span>
             <span className="w-8 h-[1px] bg-[#8E6969] group-hover:w-12 transition-all" />
           </button>
         </div>

@@ -2,6 +2,7 @@
 
 // import React-a ehtiyac yoxdur
 import React from "react";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface Testimonial {
   text: string;
@@ -10,21 +11,22 @@ interface Testimonial {
 }
 
 const Testimonials = () => {
+  const { t } = useLanguage();
   const data: Testimonial[] = [
     {
-      text: "VELA sayəsində hər toya fərqli görünürəm. Kirayə sistemi əla işləyir!",
+      text: t("home.test_1"),
       name: "Aynur",
-      age: "28 yaş",
+      age: "28 " + t("home.age"),
     },
     {
-      text: "Ailə üçün kombin tapmaq heç vaxt bu qədər asan olmamışdı. Uşaqlar da çox sevdi!",
+      text: t("home.test_2"),
       name: "Leyla",
-      age: "34 yaş",
+      age: "34 " + t("home.age"),
     },
     {
-      text: "Kostyum keyfiyyəti mükəmməl idi. Satın almaq əvəzinə kirayə götürmək ən doğru qərar oldu.",
+      text: t("home.test_3"),
       name: "Rəşad",
-      age: "31 yaş",
+      age: "31 " + t("home.age"),
     },
   ];
 
@@ -32,7 +34,7 @@ const Testimonials = () => {
     <section className="bg-[#F9F6F3] py-20 px-4">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-center text-4xl md:text-5xl font-serif mb-16 text-black">
-          Müştərilərimiz Nə Deyir?
+          {t("home.test_title")}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {data.map((item, idx) => (

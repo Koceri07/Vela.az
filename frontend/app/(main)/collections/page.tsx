@@ -7,21 +7,26 @@ import { mockProducts } from "./productSlice";
 import { useCart } from "@/context/CartContext";
 import { useSearchParams } from "next/navigation";
 import ProductCard from "@/components/common/ProductCard";
+import { useLanguage } from "@/context/LanguageContext";
 
 const CollectionsPage = () => {
   const [activeTab, setActiveTab] = useState("rent"); // 'rent' or 'buy'
   const [showFilters, setShowFilters] = useState(true);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [selectedOccasion, setSelectedOccasion] = useState<string>("Hamısı");
+  const [selectedOccasion, setSelectedOccasion] = useState<string>("all");
   const [priceRange, setPriceRange] = useState<number>(2000);
   
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get("cat");
+  const { t } = useLanguage();
   
   const filteredItems = useMemo(() => {
     return mockProducts.filter(item => {
       const matchesSize = selectedSize ? item.size === selectedSize : true;
-      const matchesOccasion = selectedOccasion === "Hamısı" ? true : item.occasion === selectedOccasion;
+      const matchesOccasion = selectedOccasion === "all" ? true : 
+        (selectedOccasion === "wedding" && item.occasion === "Toy") ||
+        (selectedOccasion === "party" && item.occasion === "Ziyafət") ||
+        (selectedOccasion === "ceremony" && item.occasion === "Mərasim");
       const currentPrice = activeTab === "rent" ? item.rentPrice : item.sellPrice;
       const matchesPrice = currentPrice <= priceRange;
       
@@ -48,7 +53,7 @@ const CollectionsPage = () => {
                 activeTab === "rent" ? "bg-[#8E6969] text-white shadow-sm" : "text-gray-500 hover:text-black"
               }`}
             >
-              Kirayə Qiymətləri
+              {t("coll.rent_prices")}
             </button>
             <button 
               onClick={() => setActiveTab("buy")}
@@ -56,7 +61,7 @@ const CollectionsPage = () => {
                 activeTab === "buy" ? "bg-[#8E6969] text-white shadow-sm" : "text-gray-500 hover:text-black"
               }`}
             >
-              Satınalma Qiymətləri
+              {t("coll.buy_prices")}
             </button>
           </div>
 
@@ -66,7 +71,7 @@ const CollectionsPage = () => {
               className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-md text-sm font-medium hover:bg-gray-50 transition"
             >
               <SlidersHorizontal size={16} />
-              Filtrlər
+              {t("coll.filters")}
             </button>
           </div>
         </div>
@@ -85,9 +90,9 @@ const CollectionsPage = () => {
               {/* ÖLÇÜ */}
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500">ÖLÇÜ</h3>
+                  <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500">{t("coll.size")}</h3>
                   {selectedSize && (
-                    <button onClick={() => setSelectedSize(null)} className="text-[10px] text-[#A37A7A] underline">Sıfırla</button>
+                    <button onClick={() => setSelectedSize(null)} className="text-[10px] text-[#A37A7A] underline">{t("coll.reset")}</button>
                   )}
                 </div>
                 <div className="flex gap-2 flex-wrap text-xs">
@@ -109,7 +114,7 @@ const CollectionsPage = () => {
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500">
-                    QİYMƏT ({activeTab === "rent" ? "KİRAYƏ" : "SATINALMA"})
+                    {t("coll.price")} ({activeTab === "rent" ? t("coll.rent") : t("coll.buy")})
                   </h3>
                   <span className="text-xs font-bold text-[#8E6969]">{priceRange} AZN</span>
                 </div>
@@ -132,9 +137,9 @@ const CollectionsPage = () => {
 
               {/* MÜNASİBƏT */}
               <div className="space-y-4">
-                <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500">MÜNASİBƏT</h3>
+                <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500">{t("coll.occasion")}</h3>
                 <div className="flex gap-2 flex-wrap">
-                  {["Hamısı", "Toy", "Ziyafət", "Mərasim"].map(occ => (
+                  {["all", "wedding", "party", "ceremony"].map(occ => (
                     <button 
                       key={occ} 
                       onClick={() => setSelectedOccasion(occ)}
@@ -142,7 +147,7 @@ const CollectionsPage = () => {
                         selectedOccasion === occ ? "bg-[#8E6969] text-white" : "bg-white border border-gray-100 text-gray-600 hover:border-black"
                       }`}
                     >
-                      {occ}
+                      {t(`coll.${occ}`)}
                     </button>
                   ))}
                 </div>
@@ -159,7 +164,7 @@ const CollectionsPage = () => {
             ))
           ) : (
             <div className="col-span-full py-20 text-center text-gray-400 italic">
-              Seçilmiş filtrlərə uyğun məhsul tapılmadı.
+              {t("coll.not_found")}
             </div>
           )}
         </div>

@@ -3,15 +3,17 @@
 
 import React from "react";
 import Link from "next/link";
-import { Search, Heart, ShoppingBag, User, UserPlus } from "lucide-react";
+import { Search, Heart, ShoppingBag, User, UserPlus, Globe, ChevronDown } from "lucide-react";
 import { navigation } from "@/data/header/header";
 import { useCart } from "@/context/CartContext";
+import { useLanguage } from "@/context/LanguageContext";
 import SearchOverlay from "./SearchOverlay";
 import { mockProducts } from "@/app/(main)/collections/productSlice";
 
 const Header = () => {
   const { cart, wishlist } = useCart();
   const [isSearchOpen, setIsSearchOpen] = React.useState(false);
+  const { language, setLanguage, t } = useLanguage();
 
   return (
     <header className="w-full bg-white border-b border-gray-100">
@@ -46,7 +48,7 @@ const Header = () => {
               }`}
             >
               {/* CollectionLink componenti yarat */}
-              {item.label}
+              {t("nav." + (item.href === "/" ? "home" : item.href.replace("/", "")))}
             </Link>
           ))}
 
@@ -56,7 +58,7 @@ const Header = () => {
               href="/create-store"
               className="flex items-center gap-1.5 border border-[#8E6969] text-[#8E6969] text-xs font-bold uppercase tracking-widest px-5 py-2.5 rounded-full hover:bg-[#8E6969] hover:text-white transition-all duration-300 shadow-sm whitespace-nowrap"
             >
-              Mağaza Yarat
+              {t("header.create_store")}
             </Link>
             <Link
               href="/create-listing"
@@ -65,27 +67,62 @@ const Header = () => {
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
               </svg>
-              Elan Yarat
+              {t("header.create_listing")}
             </Link>
           </div>
         </nav>
 
-        {/* Sağ tərəf: User və İkonlar */}
-        <div className="flex items-center space-x-6">
-          <div className="hidden lg:flex items-center border-r border-gray-200 pr-6 space-x-4">
+        {/* Sağ tərəf: User, Dil və İkonlar */}
+        <div className="flex items-center space-x-5 lg:space-x-6">
+          
+          {/* Language Switcher */}
+          <div className="relative group hidden sm:flex items-center">
+            <button className="flex items-center space-x-1 text-xs font-semibold text-gray-600 hover:text-black transition uppercase py-2">
+              <Globe size={16} strokeWidth={1.5} className="text-gray-500" />
+              <span className="mt-[1px]">{language}</span>
+              <ChevronDown size={14} strokeWidth={2} className="transition-transform duration-300 group-hover:rotate-180 text-gray-400" />
+            </button>
+            
+            {/* Invisible hover bridge to keep dropdown open */}
+            <div className="absolute top-full right-0 left-0 h-4"></div>
+            
+            {/* Dropdown Menu */}
+            <div className="absolute top-[calc(100%+0.5rem)] right-0 w-24 bg-white border border-gray-100 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-[100] transform origin-top scale-95 group-hover:scale-100">
+              <div className="py-1.5 flex flex-col">
+                {(['AZ', 'RU', 'EN'] as const).map((lang) => (
+                  <button
+                    key={lang}
+                    onClick={() => setLanguage(lang)}
+                    className={`text-left px-4 py-2 text-xs font-bold uppercase transition-colors flex items-center justify-between ${
+                      language === lang 
+                        ? 'text-[#8E6969] bg-gray-50/80' 
+                        : 'text-gray-600 hover:text-[#8E6969] hover:bg-gray-50'
+                    }`}
+                  >
+                    {lang}
+                    {language === lang && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#8E6969]"></span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="hidden lg:flex items-center border-l border-r border-gray-200 px-5 lg:px-6 space-x-4">
             <Link
               href="/login"
               className="flex items-center space-x-1.5 text-xs font-medium text-gray-600 hover:text-black transition uppercase"
             >
               <User size={18} strokeWidth={1.5} />
-              <span>Daxil ol</span>
+              <span>{t("header.login")}</span>
             </Link>
             <Link
               href="/register"
               className="flex items-center space-x-1.5 text-xs font-medium text-gray-600 hover:text-black transition uppercase"
             >
               <UserPlus size={18} strokeWidth={1.5} />
-              <span>Qeydiyyat</span>
+              <span>{t("header.register")}</span>
             </Link>
           </div>
 

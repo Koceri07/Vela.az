@@ -1,8 +1,13 @@
 
+"use client";
+
 import Link from "next/link";
 import { Mail, Instagram } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const Footer = () => {
+  const { t } = useLanguage();
+
   return (
     <footer className="bg-[#4A3728] text-gray-300 py-12 px-4 font-sans">
       <div className="max-w-7xl mx-auto">
@@ -13,35 +18,35 @@ const Footer = () => {
               VELA
             </h2>
             <p className="text-sm leading-relaxed">
-              Hər tədbir üçün mükəmməl görünüş. <br />
-              Kirayə götür, satın al, parla.
+              {t("footer.desc_1")} <br />
+              {t("footer.desc_2")}
             </p>
           </div>
 
           {/* Kəşf Et */}
           <div className="space-y-4">
             <h3 className="text-white font-bold uppercase tracking-wider">
-              KƏŞF ET
+              {t("footer.discover")}
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/category/gelinlikler" className="hover:text-white transition">
-                  Gəlinliklər
+                  {t("footer.bride")}
                 </Link>
               </li>
               <li>
                 <Link href="/category/kostyumlar" className="hover:text-white transition">
-                  Kişi Kostyumları
+                  {t("footer.suits")}
                 </Link>
               </li>
               <li>
                 <Link href="/category/xanim-geyimleri" className="hover:text-white transition">
-                  Xanım Geyimləri
+                  {t("footer.women")}
                 </Link>
               </li>
               <li>
                 <Link href="/category/usaq-geyimleri" className="hover:text-white transition">
-                  Uşaq Geyimləri
+                  {t("footer.kids")}
                 </Link>
               </li>
             </ul>
@@ -50,27 +55,27 @@ const Footer = () => {
           {/* Dəstək */}
           <div className="space-y-4">
             <h3 className="text-white font-bold uppercase tracking-wider">
-              DƏSTƏK
+              {t("footer.support")}
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/about" className="hover:text-white transition">
-                  Haqqımızda
+                  {t("footer.about")}
                 </Link>
               </li>
               <li>
                 <Link href="/terms" className="hover:text-white transition">
-                  İstifadəçi Şərtləri
+                  {t("footer.terms")}
                 </Link>
               </li>
               <li>
                 <Link href="/privacy" className="hover:text-white transition">
-                  Məxfilik Siyasəti
+                  {t("footer.privacy")}
                 </Link>
               </li>
               <li>
                 <Link href="/seller-agreement" className="hover:text-white transition">
-                  Satıcı Müqaviləsi
+                  {t("footer.seller")}
                 </Link>
               </li>
             </ul>
@@ -79,15 +84,15 @@ const Footer = () => {
           {/* Xəbərdar Ol */}
           <div className="space-y-4">
             <h3 className="text-white font-bold uppercase tracking-wider">
-              XƏBƏRDAR OL
+              {t("footer.notify")}
             </h3>
             <p className="text-sm">
-              Yeni kolleksiyalar və kampaniyalardan xəbərdar ol.
+              {t("footer.notify_desc")}
             </p>
             <div className="flex items-stretch gap-2">
               <input
                 type="email"
-                placeholder="E-poçt ünvanınız"
+                placeholder={t("footer.email_placeholder")}
                 className="bg-[#5D4636] border border-gray-600 px-4 py-2 text-sm w-full focus:outline-none focus:border-gray-400"
               />
               <button className="bg-[#A37A7A] hover:bg-[#8e6969] text-white px-4 py-2 transition flex items-center justify-center">
@@ -129,7 +134,7 @@ const Footer = () => {
         {/* Alt Hissə */}
         <div className="border-t border-gray-700 mt-12 pt-8 flex flex-col items-center">
           <p className="text-xs text-gray-500">
-            © 2026 VELA. Bütün hüquqlar qorunur.
+            {t("footer.copyright")}
           </p>
         </div>
       </div>

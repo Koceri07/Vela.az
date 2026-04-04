@@ -2,8 +2,10 @@
 
 import React, { useState } from "react";
 import { Camera, Phone, Tag, DollarSign, FileText, ChevronDown, CheckCircle } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const CreateListingPage = () => {
+  const { t } = useLanguage();
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({
     title: "",
@@ -38,15 +40,15 @@ const CreateListingPage = () => {
       <div className="min-h-screen bg-[#FAF7F5] flex items-center justify-center px-4">
         <div className="bg-white rounded-2xl p-12 max-w-md w-full text-center shadow-lg">
           <CheckCircle className="mx-auto mb-6 text-[#8E6969]" size={56} strokeWidth={1.5} />
-          <h2 className="text-2xl font-serif font-bold text-[#4A3728] mb-3">Elanınız göndərildi!</h2>
+          <h2 className="text-2xl font-serif font-bold text-[#4A3728] mb-3">{t("create_listing.success_title")}</h2>
           <p className="text-gray-500 text-sm leading-relaxed mb-8">
-            Elanınız moderasiya üçün göndərildi. Yaxın zamanda əlaqə saxlanılacaq.
+            {t("create_listing.success_desc")}
           </p>
           <button
             onClick={() => { setSubmitted(false); setForm({ title: "", category: "", occasion: "", size: "", type: "rent", rentPrice: "", sellPrice: "", condition: "", description: "", phone: "", city: "", photos: [] }); }}
             className="bg-[#8E6969] text-white px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[#725454] transition"
           >
-            Yeni Elan Yarat
+            {t("create_listing.new_btn")}
           </button>
         </div>
       </div>
@@ -58,10 +60,10 @@ const CreateListingPage = () => {
       {/* Header Banner */}
       <section className="bg-[#4A3728] text-white py-14 px-4 text-center">
         <h1 className="text-3xl md:text-4xl font-serif font-bold tracking-wide mb-3">
-          Elan Yarat
+          {t("create_listing.hero_title")}
         </h1>
         <p className="text-gray-300 text-sm max-w-xl mx-auto leading-relaxed">
-          Geyimini kirayəyə ver və ya sat. Bütün məlumatları doldurun, elanınız yayınlansın.
+          {t("create_listing.hero_desc")}
         </p>
       </section>
 
@@ -72,14 +74,14 @@ const CreateListingPage = () => {
           {/* ─── 1. Əsas Məlumatlar ─── */}
           <div className="bg-white rounded-2xl p-8 shadow-sm border border-stone-100 space-y-6">
             <h2 className="text-[#4A3728] font-serif font-bold text-xl flex items-center gap-2">
-              <FileText size={20} className="text-[#A37A7A]" /> Əsas Məlumatlar
+              <FileText size={20} className="text-[#A37A7A]" /> {t("create_listing.basic_info")}
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Başlıq */}
               <div className="md:col-span-2">
                 <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">
-                  Elan Başlığı <span className="text-red-400">*</span>
+                  {t("create_listing.title_label")} <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="text"
@@ -95,7 +97,7 @@ const CreateListingPage = () => {
               {/* Kateqoriya */}
               <div className="relative">
                 <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">
-                  Kateqoriya <span className="text-red-400">*</span>
+                  {t("create_listing.cat_label")} <span className="text-red-400">*</span>
                 </label>
                 <select
                   name="category"
@@ -104,7 +106,7 @@ const CreateListingPage = () => {
                   required
                   className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#8E6969] bg-gray-50 appearance-none pr-10"
                 >
-                  <option value="">Seçin...</option>
+                  <option value="">{t("create_listing.select")}</option>
                   <option value="bridal">Gəlinliklər</option>
                   <option value="women">Xanım Geyimləri</option>
                   <option value="mens">Kişi Kostyumları</option>
@@ -140,7 +142,7 @@ const CreateListingPage = () => {
               {/* Ölçü */}
               <div className="relative">
                 <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">
-                  Ölçü
+                  {t("create_listing.size_label")}
                 </label>
                 <select
                   name="size"
@@ -163,7 +165,7 @@ const CreateListingPage = () => {
               {/* Vəziyyət */}
               <div className="relative">
                 <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">
-                  Geyimin Vəziyyəti
+                  {t("create_listing.condition_label")}
                 </label>
                 <select
                   name="condition"
@@ -361,14 +363,14 @@ const CreateListingPage = () => {
               Elanı göndərməklə siz{" "}
               <a href="/seller-agreement" className="underline text-[#8E6969] hover:opacity-80">Satıcı Müqaviləsini</a>{" "}
               və{" "}
-              <a href="/terms" className="underline text-[#8E6969] hover:opacity-80">İstifadəçi Şərtlərini</a>{" "}
-              qəbul etdiyinizi təsdiqləyirsiniz.
+              <a href="/terms" className="underline text-[#8E6969] hover:opacity-80">{t("create_listing.agreement_text_4")}</a>{" "}
+              {t("create_listing.agreement_text_5")}
             </p>
             <button
               type="submit"
               className="shrink-0 bg-[#8E6969] text-white px-10 py-4 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-[#725454] transition-all duration-300 shadow-lg"
             >
-              Elanı Göndər
+              {t("create_listing.submit")}
             </button>
           </div>
 

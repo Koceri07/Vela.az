@@ -6,9 +6,11 @@ import Link from "next/link";
 import { useWishlist } from "@/context/CartContext";
 import ProductCard from "@/components/common/ProductCard";
 import { mockProducts } from "@/app/(main)/collections/productSlice";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function WishlistPage() {
   const { wishlist } = useWishlist();
+  const { t } = useLanguage();
 
   // Map wishlist items back to full product objects if possible, 
   // or just use the item data. ProductCard expects full Product type.
@@ -29,10 +31,10 @@ export default function WishlistPage() {
       <div className="bg-[#FAF7F5] py-16 px-4">
         <div className="max-w-7xl mx-auto text-center space-y-4">
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-[#4A3728]">
-            Bəyəndiklərim
+            {t("wish.title")}
           </h1>
           <p className="text-gray-500 max-w-lg mx-auto">
-            Ən çox bəyəndiyiniz modelləri burada toplayın və istədiyiniz zaman asanlıqla tapın.
+            {t("wish.sub")}
           </p>
           <div className="w-20 h-1 bg-[#8E6969] mx-auto rounded-full" />
         </div>
@@ -47,14 +49,14 @@ export default function WishlistPage() {
               </svg>
             </div>
             <div className="space-y-2">
-              <p className="text-xl font-medium text-gray-800">Seçilmişlər siyahınız hələ ki boşdur</p>
-              <p className="text-gray-500">Bəyəndiyiniz məhsulları bura əlavə etmək üçün kolleksiyalarımıza nəzər salın.</p>
+              <p className="text-xl font-medium text-gray-800">{t("wish.empty_title")}</p>
+              <p className="text-gray-500">{t("wish.empty_desc")}</p>
             </div>
             <Link 
               href="/collections" 
               className="inline-flex items-center justify-center bg-[#8E6969] text-white px-8 py-3 rounded-full font-bold uppercase tracking-widest text-xs hover:bg-[#725454] transition-all shadow-lg hover:shadow-xl active:scale-95"
             >
-              Kolleksiyaları kəşf edin
+              {t("wish.explore")}
             </Link>
           </div>
         ) : (
