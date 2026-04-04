@@ -7,11 +7,12 @@ export interface CartItem {
   name: string;
   price: number;
   image: string;
+  type?: "rent" | "buy";
 }
 
 interface CartContextType {
   cart: CartItem[];
-  addToCart: (item: CartItem) => void;
+  addToCart: (item: CartItem, type?: "rent" | "buy") => void;
   removeFromCart: (id: number) => void;
   wishlist: CartItem[];
   addToWishlist: (item: CartItem) => void;
@@ -24,8 +25,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<CartItem[]>([]);
 
-  const addToCart = (item: CartItem) => {
-    setCart((prev) => [...prev, item]);
+  const addToCart = (item: CartItem, type: "rent" | "buy" = "rent") => {
+    setCart((prev) => [...prev, { ...item, type }]);
   };
 
   const removeFromCart = (id: number) => {

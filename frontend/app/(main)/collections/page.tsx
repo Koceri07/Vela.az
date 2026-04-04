@@ -1,130 +1,167 @@
 
-import { BinocularsIcon,  SlidersHorizontal } from "lucide-react";
+"use client";
+
+import React, { useState, useMemo } from "react";
+import { SlidersHorizontal, X } from "lucide-react";
 import { mockProducts } from "./productSlice";
+import { useCart } from "@/context/CartContext";
+import { useSearchParams } from "next/navigation";
+import ProductCard from "@/components/common/ProductCard";
 
 const CollectionsPage = () => {
-  const items = mockProducts;
+  const [activeTab, setActiveTab] = useState("rent"); // 'rent' or 'buy'
+  const [showFilters, setShowFilters] = useState(true);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedOccasion, setSelectedOccasion] = useState<string>("Hamısı");
+  const [priceRange, setPriceRange] = useState<number>(2000);
+  
+  const searchParams = useSearchParams();
+  const categoryParam = searchParams.get("cat");
+  
+  const filteredItems = useMemo(() => {
+    return mockProducts.filter(item => {
+      const matchesSize = selectedSize ? item.size === selectedSize : true;
+      const matchesOccasion = selectedOccasion === "Hamısı" ? true : item.occasion === selectedOccasion;
+      const currentPrice = activeTab === "rent" ? item.rentPrice : item.sellPrice;
+      const matchesPrice = currentPrice <= priceRange;
+      
+      const matchesCategory = !categoryParam || 
+        (categoryParam === "bridal" && item.category === "Gəlinlik") ||
+        (categoryParam === "mens" && item.category === "Kostyum") ||
+        (categoryParam === "women" && (item.category === "Geyim" || item.category === "Ziyafət")) ||
+        (categoryParam === "kids" && item.category === "Uşaq");
+
+      return matchesSize && matchesOccasion && matchesPrice && matchesCategory;
+    });
+  }, [activeTab, selectedSize, selectedOccasion, priceRange, categoryParam]);
 
   return (
-    <div className="min-h-screen bg-white p-6 md:p-12">
-      {/* Üst Başlıq */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 border-b pb-8">
-        <div>
-          <h1 className="text-4xl font-serif text-gray-900">
-            Kolleksiyalarımız
-          </h1>
-          <p className="text-gray-500 mt-2 flex items-center gap-2 tracking-wide uppercase text-xs">
-            <BinocularsIcon size={16} /> Son trendləri kəşf edin
-          </p>
+    <div className="min-h-screen bg-white font-sans">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        
+        {/* Top Navigation - Toggles */}
+        <div className="flex flex-col items-center mb-8 space-y-6">
+          <div className="flex bg-gray-100 p-1 rounded-full items-center">
+            <button 
+              onClick={() => setActiveTab("rent")}
+              className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all ${
+                activeTab === "rent" ? "bg-[#8E6969] text-white shadow-sm" : "text-gray-500 hover:text-black"
+              }`}
+            >
+              Kirayə Qiymətləri
+            </button>
+            <button 
+              onClick={() => setActiveTab("buy")}
+              className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all ${
+                activeTab === "buy" ? "bg-[#8E6969] text-white shadow-sm" : "text-gray-500 hover:text-black"
+              }`}
+            >
+              Satınalma Qiymətləri
+            </button>
+          </div>
+
+          <div className="w-full flex justify-start">
+            <button 
+              onClick={() => setShowFilters(!showFilters)}
+              className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-md text-sm font-medium hover:bg-gray-50 transition"
+            >
+              <SlidersHorizontal size={16} />
+              Filtrlər
+            </button>
+          </div>
         </div>
-        <div className="mt-4 md:mt-0 flex items-center gap-4 text-sm font-medium text-gray-600">
-          <span>{items.length} məhsul tapıldı</span>
-          <div className="h-4 w-px bg-gray-300"></div>
-          <button className="flex items-center gap-2 hover:text-black transition">
-            <SlidersHorizontal size={18} /> Sıralama
-          </button>
-        </div>
-      </div>
 
-      <div className="flex flex-col lg:flex-row gap-12">
-        {/* Sol tərəf: Filtr Paneli */}
-        <aside className="w-full lg:w-64 shrink-0 space-y-10">
-          {/* Kateqoriyalar */}
-          <div>
-            <h3 className="text-sm font-bold uppercase tracking-widest mb-6 border-l-2 border-black pl-3">
-              Kateqoriyalar
-            </h3>
-            <ul className="space-y-4 text-sm text-gray-600">
-              <li className="hover:text-black cursor-pointer transition flex justify-between">
-                <span>Hamısı</span> <span className="text-gray-400">(12)</span>
-              </li>
-              <li className="hover:text-black cursor-pointer transition flex justify-between">
-                <span>Geyim</span> <span className="text-gray-400">(5)</span>
-              </li>
-              <li className="hover:text-black cursor-pointer transition flex justify-between">
-                <span>Aksesuar</span> <span className="text-gray-400">(3)</span>
-              </li>
-              <li className="hover:text-black cursor-pointer transition flex justify-between">
-                <span>Ayaqqabı</span> <span className="text-gray-400">(4)</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Qiymət Filtri */}
-          <div>
-            <h3 className="text-sm font-bold uppercase tracking-widest mb-6 border-l-2 border-black pl-3">
-              Qiymət Aralığı
-            </h3>
-            <div className="space-y-3">
-              <input
-                type="range"
-                className="w-full accent-black"
-                min="0"
-                max="500"
-              />
-              <div className="flex justify-between text-xs font-medium text-gray-500">
-                <span>0 AZN</span>
-                <span>500 AZN</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Rəng Filtri */}
-          <div>
-            <h3 className="text-sm font-bold uppercase tracking-widest mb-6 border-l-2 border-black pl-3">
-              Rənglər
-            </h3>
-            <div className="flex gap-3 flex-wrap">
-              <button className="w-6 h-6 rounded-full bg-black border border-gray-200"></button>
-              <button className="w-6 h-6 rounded-full bg-white border border-gray-300"></button>
-              <button
-                className="w-6 h-6 rounded-full bg-brown-600 border border-gray-200"
-                style={{ backgroundColor: "#a37a7a" }}
-              ></button>
-              <button className="w-6 h-6 rounded-full bg-gray-400 border border-gray-200"></button>
-            </div>
-          </div>
-        </aside>
-
-        {/* Sağ tərəf: Məhsul Grid-i */}
-        <div className="flex-1">
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-10">
-            {items.map((product) => (
-              <div key={product.id} className="group cursor-pointer">
-                {/* Şəkil sahəsi */}
-                {/* Product componenti yarat */}
-                <div className="relative aspect-3/4 overflow-hidden bg-gray-100 rounded-sm">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-in-out"
-                  />
-                  {/* Hoverda çıxan sürətli baxış və ya səbət düyməsi */}
-                  <div className="absolute inset-x-4 bottom-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                    <button className="w-full bg-white text-black py-3 text-xs font-bold uppercase tracking-widest shadow-lg hover:bg-black hover:text-white transition">
-                      Səbətə At
+        {/* Filters Panel */}
+        {showFilters && (
+          <div className="bg-[#FAF7F5] rounded-xl p-8 mb-10 relative border border-stone-100">
+            <button 
+              onClick={() => setShowFilters(false)}
+              className="absolute top-6 right-6 text-gray-400 hover:text-black transition"
+            >
+              <X size={20} />
+            </button>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+              {/* ÖLÇÜ */}
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500">ÖLÇÜ</h3>
+                  {selectedSize && (
+                    <button onClick={() => setSelectedSize(null)} className="text-[10px] text-[#A37A7A] underline">Sıfırla</button>
+                  )}
+                </div>
+                <div className="flex gap-2 flex-wrap text-xs">
+                  {["XS", "S", "M", "L", "XL"].map(size => (
+                    <button 
+                      key={size} 
+                      onClick={() => setSelectedSize(size)}
+                      className={`w-10 h-10 border rounded-lg flex items-center justify-center transition ${
+                        selectedSize === size ? "bg-[#8E6969] text-white border-[#8E6969]" : "bg-white border-gray-200 text-gray-600 hover:border-black"
+                      }`}
+                    >
+                      {size}
                     </button>
-                  </div>
+                  ))}
                 </div>
+              </div>
 
-                {/* Məlumat sahəsi */}
-                <div className="mt-6 text-center">
-                  <p className="text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-2">
-                    {product.category}
-                  </p>
-                  <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider group-hover:text-[#a37a7a] transition">
-                    {product.name}
+              {/* QİYMƏT ARALIĞI */}
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500">
+                    QİYMƏT ({activeTab === "rent" ? "KİRAYƏ" : "SATINALMA"})
                   </h3>
-                  <div className="mt-2 flex justify-center items-center gap-3">
-                    <span className="text-sm font-bold text-gray-900">
-                      {product.price} AZN
-                    </span>
-                    {/* Əgər endirim olsa bura köhnə qiymət də qoya bilərsən */}
+                  <span className="text-xs font-bold text-[#8E6969]">{priceRange} AZN</span>
+                </div>
+                <div className="pt-2">
+                  <input 
+                    type="range" 
+                    min="0" 
+                    max="2000" 
+                    step="50"
+                    value={priceRange}
+                    onChange={(e) => setPriceRange(parseInt(e.target.value))}
+                    className="w-full h-1.5 bg-gray-200 rounded-full appearance-none cursor-pointer accent-[#8E6969]"
+                  />
+                  <div className="flex justify-between mt-4 text-[11px] font-medium text-gray-400">
+                    <span>0 AZN</span>
+                    <span>2000 AZN</span>
                   </div>
                 </div>
               </div>
-            ))}
+
+              {/* MÜNASİBƏT */}
+              <div className="space-y-4">
+                <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500">MÜNASİBƏT</h3>
+                <div className="flex gap-2 flex-wrap">
+                  {["Hamısı", "Toy", "Ziyafət", "Mərasim"].map(occ => (
+                    <button 
+                      key={occ} 
+                      onClick={() => setSelectedOccasion(occ)}
+                      className={`px-4 py-2 rounded-full text-xs transition ${
+                        selectedOccasion === occ ? "bg-[#8E6969] text-white" : "bg-white border border-gray-100 text-gray-600 hover:border-black"
+                      }`}
+                    >
+                      {occ}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
+        )}
+
+        {/* Product Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+          {filteredItems.length > 0 ? (
+            filteredItems.map((product) => (
+              <ProductCard key={product.id} product={product} activeTab={activeTab as "rent" | "buy"} />
+            ))
+          ) : (
+            <div className="col-span-full py-20 text-center text-gray-400 italic">
+              Seçilmiş filtrlərə uyğun məhsul tapılmadı.
+            </div>
+          )}
         </div>
       </div>
     </div>

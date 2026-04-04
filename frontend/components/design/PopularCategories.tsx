@@ -18,28 +18,28 @@ const PopularCategories = () => {
       title: "Gəlinliklər",
       count: 124,
       image:
-        "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=400&h=500",
+        "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&h=500",
       link: "/collections?cat=bridal",
     },
     {
       title: "Ziyafət Geyimləri",
       count: 256,
       image:
-        "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&fit=crop&w=400&h=500",
+        "https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=400&h=500",
       link: "/collections?cat=evening",
     },
     {
       title: "Kişi Kostyumları",
       count: 89,
       image:
-        "https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=400&h=500",
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&h=500",
       link: "/collections?cat=mens",
     },
     {
       title: "Uşaq Kolleksiyası",
       count: 67,
       image:
-        "https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=400&h=500",
+        "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?auto=format&fit=crop&w=400&h=500",
       link: "/collections?cat=kids",
     },
   ];

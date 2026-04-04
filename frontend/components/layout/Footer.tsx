@@ -1,6 +1,6 @@
 
 import Link from "next/link";
-import { Mail, Instagram, Facebook, Send, MessageCircle } from "lucide-react";
+import { Mail, Instagram } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -25,23 +25,23 @@ const Footer = () => {
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="#" className="hover:text-white transition">
-                  Kolleksiya
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-white transition">
+                <Link href="/category/gelinlikler" className="hover:text-white transition">
                   Gəlinliklər
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition">
+                <Link href="/category/kostyumlar" className="hover:text-white transition">
                   Kişi Kostyumları
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition">
-                  Ailə Kombinləri
+                <Link href="/category/xanim-geyimleri" className="hover:text-white transition">
+                  Xanım Geyimləri
+                </Link>
+              </li>
+              <li>
+                <Link href="/category/usaq-geyimleri" className="hover:text-white transition">
+                  Uşaq Geyimləri
                 </Link>
               </li>
             </ul>
@@ -54,23 +54,23 @@ const Footer = () => {
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="#" className="hover:text-white transition">
+                <Link href="/about" className="hover:text-white transition">
                   Haqqımızda
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition">
-                  FAQ
+                <Link href="/terms" className="hover:text-white transition">
+                  İstifadəçi Şərtləri
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition">
-                  Qaytarılma Şərtləri
+                <Link href="/privacy" className="hover:text-white transition">
+                  Məxfilik Siyasəti
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition">
-                  Çatdırılma
+                <Link href="/seller-agreement" className="hover:text-white transition">
+                  Satıcı Müqaviləsi
                 </Link>
               </li>
             </ul>
@@ -96,21 +96,32 @@ const Footer = () => {
             </div>
 
             {/* Sosial Şəbəkələr + WhatsApp & Telegram */}
-            <div className="flex items-center space-x-4 pt-4 text-gray-400">
-              <Link href="#" className="hover:text-white transition">
-                <Instagram size={20} />
+            <div className="flex items-center space-x-6 pt-4 text-gray-400">
+              <Link
+                href="https://www.instagram.com/vela.az_official?igsh=eG1rbDM5N3dlY2xz"
+                target="_blank"
+                className="hover:text-white transition"
+              >
+                <Instagram size={22} />
               </Link>
-              <Link href="#" className="hover:text-white transition">
-                <Facebook size={20} />
+              <Link
+                href="https://www.tiktok.com/@vela.az_official"
+                target="_blank"
+                className="hover:text-white transition"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="22"
+                  height="22"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+                </svg>
               </Link>
-              <Link href="#" className="hover:text-white transition">
-                <Send size={20} />
-              </Link>{" "}
-              {/* Telegram */}
-              <Link href="#" className="hover:text-white transition">
-                <MessageCircle size={20} />
-              </Link>{" "}
-              {/* WhatsApp */}
             </div>
           </div>
         </div>
