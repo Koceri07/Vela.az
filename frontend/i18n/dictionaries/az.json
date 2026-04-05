@@ -91,13 +91,7 @@
     "per_rent": "/ kirayə",
     "view_product": "Məhsula bax",
     "not_found": "ilə bağlı məhsul tapılmadı",
-    "tags": [
-      "Ziyafət Geyimi",
-      "Gəlinlik",
-      "Atlas",
-      "Kostyum",
-      "Uşaq"
-    ]
+    "tags": ["Ziyafət Geyimi", "Gəlinlik", "Atlas", "Kostyum", "Uşaq"]
   },
   "product": {
     "new": "YENİ",
@@ -353,7 +347,20 @@
       "all_statuses": "Bütün Statuslar",
       "active": "Aktiv",
       "inactive": "Qeyri-aktiv",
-      "out_of_stock": "Stokda yoxdur"
+      "draft": "Qaralama",
+      "out_of_stock": "Stokda yoxdur",
+      "categories": {
+        "wedding_dresses": "Toy Geyimləri",
+        "mens_suits": "Kişi Kostyumları",
+        "womens_clothing": "Qadın Geyimləri",
+        "childrens_clothing": "Uşaq Geyimləri",
+        "accessories": "Aksesuarlar"
+      },
+      "statuses": {
+        "active": "Aktiv",
+        "inactive": "Qeyri-aktiv",
+        "draft": "Qaralama"
+      }
     },
     "orders": {
       "title": "Sifarişlər",
@@ -361,21 +368,28 @@
       "download_report": "Rəpor İndir",
       "search_placeholder": "Sifariş nömrəsi, müştəri adı və ya telefon axtar...",
       "all_statuses": "Bütün Statuslar",
-      "pending": "Gözləmə",
-      "processing": "İşlənir",
-      "shipped": "Göndərildi",
-      "delivered": "Çatdırıldı",
-      "cancelled": "Ləğv Edildi"
+      "statuses": {
+        "all": "Hamısı",
+        "pending": "Gözləmə",
+        "processing": "İşlənir",
+        "shipped": "Göndərildi",
+        "delivered": "Çatdırıldı",
+        "cancelled": "Ləğv Edildi"
+      }
     },
     "users": {
       "title": "İstifadəçilər",
       "subtitle": "İstifadəçiləri idarə edin",
-      "add_user": "İstifadəçi Əlavə Et",
+      "add_new": "Yeni İstifadəçi",
       "search_placeholder": "Ad, soyad və ya e-poçt axtar...",
       "all_roles": "Bütün Rollar",
       "admin": "Admin",
       "user": "İstifadəçi",
-      "seller": "Satıcı"
+      "seller": "Satıcı",
+      "stats": {
+        "total_users": "Cəmi İstifadəçilər",
+        "active_users": "Aktiv İstifadəçilər"
+      }
     },
     "settings": {
       "title": "Tənzimləmələr",
@@ -386,7 +400,8 @@
       "products": "Məhsullar",
       "orders": "Sifarişlər",
       "users": "İstifadəçilər",
-      "settings": "Tənzimləmələr"
+      "settings": "Tənzimləmələr",
+      "login": "Giriş"
     }
   }
 }

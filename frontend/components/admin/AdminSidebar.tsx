@@ -60,7 +60,7 @@ const AdminSidebar = ({ isOpen }: { isOpen: boolean }) => {
                   }`}
                   title={item.label}
                 >
-                  <Icon size={20} className="flex-shrink-0" />
+                  <Icon size={20} className="shrink-0" />
                   {isOpen && <span className="font-medium">{item.label}</span>}
                   {isOpen && isActive && (
                     <ChevronRight size={18} className="ml-auto" />
@@ -78,7 +78,7 @@ const AdminSidebar = ({ isOpen }: { isOpen: boolean }) => {
           className="w-full flex items-center gap-4 px-4 py-3 rounded-lg text-gray-300 hover:bg-red-600 transition"
           title={t("admin.sidebar.logout")}
         >
-          <LogOut size={20} className="flex-shrink-0" />
+          <LogOut size={20} className="shrink-0" />
           {isOpen && <span className="font-medium">{t("admin.sidebar.logout")}</span>}
         </button>
       </div>

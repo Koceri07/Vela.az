@@ -1,13 +1,17 @@
 "use client";
 
 import React from "react";
-import { Menu, Bell, Settings, User } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Menu, Bell, Settings, User, LogOut } from "lucide-react";
 
-const AdminHeader = ({
-  onSidebarToggle,
-}: {
-  onSidebarToggle: () => void;
-}) => {
+const AdminHeader = ({ onSidebarToggle }: { onSidebarToggle: () => void }) => {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    localStorage.removeItem("adminLoggedIn");
+    router.push("/admin/login");
+  };
+
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
       <div className="px-6 py-4 flex items-center justify-between">
@@ -42,20 +46,12 @@ const AdminHeader = ({
               <p className="text-sm font-semibold text-gray-900">Admin</p>
               <p className="text-xs text-gray-600">admin@vela.az</p>
             </div>
-            <button className="p-1 hover:bg-gray-100 rounded transition">
-              <svg
-                className="w-4 h-4 text-gray-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                />
-              </svg>
+            <button
+              onClick={handleLogout}
+              className="p-2 hover:bg-red-50 rounded-lg transition text-red-600"
+              title="Çıxış"
+            >
+              <LogOut size={18} />
             </button>
           </div>
         </div>
