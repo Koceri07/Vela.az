@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import { Menu, Bell, Settings, User, LogOut } from "lucide-react";
+import { Menu, Bell, Settings, LogOut } from "lucide-react";
 
 const AdminHeader = ({ onSidebarToggle }: { onSidebarToggle: () => void }) => {
   const router = useRouter();

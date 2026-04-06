@@ -1,9 +1,11 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 type Language = "AZ" | "RU" | "EN";
-type Dictionary = Record<string, any>;
+interface Dictionary {
+  [key: string]: string | string[] | Dictionary | undefined;
+}
 
 interface LanguageContextProps {
   language: Language;
@@ -13,48 +15,65 @@ interface LanguageContextProps {
 
 const LanguageContext = createContext<LanguageContextProps | undefined>(undefined);
 
-// Lüğətlərin asinxron yüklənməsi (Dynamic Import) ki, sayt ilk vaxtdan ağırlaşmasın
 const dictionaries: Record<Language, () => Promise<Dictionary>> = {
   AZ: () => import("@/i18n/dictionaries/az.json").then((m) => m.default),
   RU: () => import("@/i18n/dictionaries/ru.json").then((m) => m.default),
   EN: () => import("@/i18n/dictionaries/en.json").then((m) => m.default),
 };
 
-// Başlanğıc fallback ki, "t" işləyərkən erro verməsin yüklənənə qədər
-const defaultAzDictionary = {
+const defaultAzDictionary: Dictionary = {
   header: {
     create_store: "Mağaza Yarat",
     create_listing: "Elan Yarat",
     login: "Daxil ol",
     register: "Qeydiyyat",
-    search: "Axtarış"
-  }
+    search: "Axtarış",
+  },
 };
 
-export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
-  const [language, setLanguageState] = useState<Language>("AZ");
-  const [dictionary, setDictionary] = useState<Dictionary>(defaultAzDictionary); // preload az
+function getSavedLanguage(): Language {
+  if (typeof window === "undefined") {
+    return "AZ";
+  }
 
-  // 1. App açılanda seçilmiş dili localStorage-dən götürürük
-  useEffect(() => {
-    try {
-      const savedLang = localStorage.getItem("VELA_LANG") as Language;
-      if (savedLang && ["AZ", "RU", "EN"].includes(savedLang)) {
-        setLanguageState(savedLang);
-      }
-    } catch (error) {
-      console.error("Language API error", error);
+  const saved = window.localStorage.getItem("VELA_LANG");
+  return saved === "AZ" || saved === "RU" || saved === "EN" ? saved : "AZ";
+}
+
+function getNestedValue(source: Dictionary | string | string[] | undefined, keys: string[]) {
+  let current = source;
+
+  for (const key of keys) {
+    if (!current || typeof current === "string" || Array.isArray(current)) {
+      return undefined;
     }
-  }, []);
 
-  // 2. Dil dəyişən kimi Lüğəti fetch edirik
+    current = current[key];
+  }
+
+  return typeof current === "string" ? current : undefined;
+}
+
+export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
+  const [language, setLanguageState] = useState<Language>(getSavedLanguage);
+  const [dictionary, setDictionary] = useState<Dictionary>(defaultAzDictionary);
+
   useEffect(() => {
     let isMounted = true;
-    dictionaries[language]().then((dict) => {
-      if (isMounted) setDictionary(dict);
-      // document tag-ini dəyişirik a11y üçün
-      document.documentElement.lang = language.toLowerCase();
-    }).catch((err) => console.error("Failed to load dict", err));
+
+    dictionaries[language]()
+      .then((dict) => {
+        if (!isMounted) {
+          return;
+        }
+
+        setDictionary(dict);
+        document.documentElement.lang = language.toLowerCase();
+      })
+      .catch((error) => {
+        console.error("Failed to load dict", error);
+      });
+
     return () => {
       isMounted = false;
     };
@@ -63,31 +82,13 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
     try {
-      localStorage.setItem("VELA_LANG", lang);
-    } catch (error) {}
+      window.localStorage.setItem("VELA_LANG", lang);
+    } catch {}
   };
 
-  // Köməkçi funksiya: "header.login" kimi iç-içə gələn adları lüğətdən tapır
   const t = (key: string): string => {
     const keys = key.split(".");
-    let value: any = dictionary;
-    
-    for (const k of keys) {
-      if (value === undefined) break;
-      value = value[k];
-    }
-    
-    if (value === undefined) {
-      // Yüklənmədiyində və ya tapılmayanda fallback kimi açarın özünü qaytar(və ya defaultAz)
-      let fallback: any = defaultAzDictionary;
-      for (const k of keys) {
-        if (fallback === undefined) break;
-        fallback = fallback[k];
-      }
-      return fallback || key; // "header.login" yerinə əks çıxış
-    }
-
-    return value;
+    return getNestedValue(dictionary, keys) || getNestedValue(defaultAzDictionary, keys) || key;
   };
 
   return (

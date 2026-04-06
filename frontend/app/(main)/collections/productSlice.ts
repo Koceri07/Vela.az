@@ -1,163 +1,23 @@
 export interface Product {
   id: number;
+  slug?: string;
   name: string;
   name_en?: string;
   name_ru?: string;
+  description?: string;
   price: number;
   rentPrice: number;
   sellPrice: number;
   image: string;
   category: string;
+  backendCategory?: string;
   category_en?: string;
   category_ru?: string;
   occasion: string;
   size: string;
+  stockQuantity?: number;
+  storeId?: number;
+  storeName?: string;
+  createdAt?: string;
   isNew?: boolean;
 }
-
-export const mockProducts: Product[] = [
-  {
-    id: 1,
-    name: "Qızıl Atlas Geyimi",
-    name_en: "Gold Satin Dress",
-    name_ru: "Золотое атласное платье",
-    price: 95,
-    rentPrice: 95,
-    sellPrice: 380,
-    image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=400&h=500",
-    category: "Geyim",
-    category_en: "Clothing",
-    category_ru: "Одежда",
-    occasion: "Ziyafət",
-    size: "M",
-    isNew: true,
-  },
-  {
-    id: 2,
-    name: "İpək Ziyafət Geyimi",
-    name_en: "Silk Evening Gown",
-    name_ru: "Шелковое вечернее платье",
-    price: 80,
-    rentPrice: 80,
-    sellPrice: 320,
-    image: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=400&h=500",
-    category: "Ziyafət",
-    category_en: "Evening",
-    category_ru: "Вечерние",
-    occasion: "Ziyafət",
-    size: "S",
-    isNew: true,
-  },
-  {
-    id: 3,
-    name: "Klassik Smoking Kostyumu",
-    name_en: "Classic Tuxedo Suit",
-    name_ru: "Классический смокинг костюм",
-    price: 120,
-    rentPrice: 120,
-    sellPrice: 480,
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9isfopz8hck1WKVVDTnGcg4sDaAmgR8LbvA&s",
-    category: "Kostyum",
-    category_en: "Suit",
-    category_ru: "Костюм",
-    occasion: "Toy",
-    size: "L",
-    isNew: false,
-  },
-  {
-    id: 4,
-    name: "Çəhrayı Dantel Gəlinlik",
-    name_en: "Pink Lace Wedding Dress",
-    name_ru: "Розовое кружевное свадебное платье",
-    price: 150,
-    rentPrice: 150,
-    sellPrice: 600,
-    image: "https://images.unsplash.com/photo-1541250848049-b4f7141dca3f?auto=format&fit=crop&w=400&h=500",
-    category: "Gəlinlik",
-    category_en: "Bridal",
-    category_ru: "Свадебные",
-    occasion: "Toy",
-    size: "M",
-    isNew: true,
-  },
-  {
-    id: 5,
-    name: "Bej Axşam Geyimi",
-    name_en: "Beige Evening Dress",
-    name_ru: "Бежевое вечернее платье",
-    price: 70,
-    rentPrice: 70,
-    sellPrice: 280,
-    image: "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&w=400&h=500",
-    category: "Geyim",
-    category_en: "Clothing",
-    category_ru: "Одежда",
-    occasion: "Mərasim",
-    size: "S",
-    isNew: false,
-  },
-  {
-    id: 6,
-    name: "Bordo Qəftan",
-    name_en: "Burgundy Caftan",
-    name_ru: "Бордовый кафтан",
-    price: 85,
-    rentPrice: 85,
-    sellPrice: 340,
-    image: "https://i.etsystatic.com/33976534/r/il/291565/7236148858/il_794xN.7236148858_1gop.jpg",
-    category: "Geyim",
-    category_en: "Clothing",
-    category_ru: "Одежда",
-    occasion: "Mərasim",
-    size: "L",
-    isNew: true,
-  },
-  {
-    id: 7,
-    name: "Ağ Toy Geyimi",
-    name_en: "White Wedding Dress",
-    name_ru: "Белое свадебное платье",
-    price: 200,
-    rentPrice: 200,
-    sellPrice: 800,
-    image: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQhTeQFqWPNN7_iiwvsW6cO_GaQesTWrmG_lrm_WYGvZZq8-sKMPa_d95VpeSgC",
-    category: "Gəlinlik",
-    category_en: "Bridal",
-    category_ru: "Свадебные",
-    occasion: "Toy",
-    size: "XS",
-    isNew: false,
-  },
-  {
-    id: 8,
-    name: "Uşaq Ziyafət Geyimi",
-    name_en: "Kids Evening Outfit",
-    name_ru: "Детский вечерний наряд",
-    price: 55,
-    rentPrice: 55,
-    sellPrice: 220,
-    image: "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?auto=format&fit=crop&w=400&h=500",
-    category: "Uşaq",
-    category_en: "Kids",
-    category_ru: "Детские",
-    occasion: "Mərasim",
-    size: "XS",
-    isNew: true,
-  },
-  {
-    id: 9,
-    name: "Mavi Atlas Don",
-    name_en: "Blue Satin Dress",
-    name_ru: "Синее атласное платье",
-    price: 90,
-    rentPrice: 90,
-    sellPrice: 360,
-    image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=400&h=500",
-    category: "Ziyafət",
-    category_en: "Evening",
-    category_ru: "Вечерние",
-    occasion: "Ziyafət",
-    size: "M",
-    isNew: false,
-  },
-];

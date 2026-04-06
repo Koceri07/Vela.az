@@ -388,7 +388,8 @@
       "seller": "Satıcı",
       "stats": {
         "total_users": "Cəmi İstifadəçilər",
-        "active_users": "Aktiv İstifadəçilər"
+        "active_users": "Aktiv İstifadəçilər",
+        "inactive_users": "Qeyri-aktiv İstifadəçilər"
       }
     },
     "settings": {

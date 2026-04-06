@@ -394,12 +394,18 @@
     "users": {
       "title": "Users",
       "subtitle": "Manage users",
+      "add_new": "Add New User",
       "add_user": "Add User",
       "search_placeholder": "Search name, surname or email...",
       "all_roles": "All Roles",
       "admin": "Admin",
       "user": "User",
-      "seller": "Seller"
+      "seller": "Seller",
+      "stats": {
+        "total_users": "Total Users",
+        "active_users": "Active Users",
+        "inactive_users": "Inactive Users"
+      }
     },
     "settings": {
       "title": "Settings",

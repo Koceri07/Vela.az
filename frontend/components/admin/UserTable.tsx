@@ -1,83 +1,73 @@
 "use client";
 
-import React from "react";
-import { Eye, Edit2, Trash2, Shield, ShieldOff } from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
+import { Eye, Edit2, ShieldOff } from "lucide-react";
+import { getApiErrorMessage, getUsers } from "@/lib/api/client";
+import type { UserDto } from "@/lib/api/types";
 
 interface UserTableProps {
   searchTerm: string;
   roleFilter: string;
 }
 
+const roleLabels: Record<string, string> = {
+  CUSTOMER: "Müştəri",
+  VENDOR: "Satıcı",
+  ADMIN: "Admin",
+};
+
 const UserTable: React.FC<UserTableProps> = ({ searchTerm, roleFilter }) => {
-  const users = [
-    {
-      id: "001",
-      name: "Ayşə Məmmədova",
-      email: "ayse@example.com",
-      phone: "+994 50 123 45 67",
-      role: "customer",
-      status: "active",
-      joinDate: "2025-01-15",
-      orders: 12,
-    },
-    {
-      id: "002",
-      name: "Fiqrət Hüseynov",
-      email: "fiqrat@example.com",
-      phone: "+994 51 234 56 78",
-      role: "seller",
-      status: "active",
-      joinDate: "2025-02-10",
-      orders: 45,
-    },
-    {
-      id: "003",
-      name: "Leyla İsmayılova",
-      email: "leyla@example.com",
-      phone: "+994 70 345 67 89",
-      role: "customer",
-      status: "active",
-      joinDate: "2025-03-05",
-      orders: 8,
-    },
-    {
-      id: "004",
-      name: "Rəfiq Əliyev",
-      email: "rafiq@example.com",
-      phone: "+994 55 456 78 90",
-      role: "admin",
-      status: "active",
-      joinDate: "2024-06-20",
-      orders: 0,
-    },
-    {
-      id: "005",
-      name: "Samirə Qasımova",
-      email: "samire@example.com",
-      phone: "+994 99 567 89 01",
-      role: "customer",
-      status: "inactive",
-      joinDate: "2024-12-01",
-      orders: 3,
-    },
-  ];
+  const [users, setUsers] = useState<UserDto[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const roleLabels: Record<string, string> = {
-    customer: "Müştəri",
-    seller: "Satıcı",
-    admin: "Admin",
-  };
+  useEffect(() => {
+    let cancelled = false;
 
-  const filteredUsers = users.filter((user) => {
-    const matchesSearch =
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.phone.includes(searchTerm);
+    const loadUsers = async () => {
+      try {
+        setLoading(true);
+        setError("");
+        const page = await getUsers({
+          searchTerm: searchTerm || undefined,
+          page: 0,
+          size: 100,
+        });
 
-    const matchesRole = roleFilter === "all" || user.role === roleFilter;
+        if (!cancelled) {
+          setUsers(page.content);
+        }
+      } catch (loadError) {
+        if (!cancelled) {
+          setError(getApiErrorMessage(loadError, "İstifadəçilər yüklənmədi."));
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    };
 
-    return matchesSearch && matchesRole;
-  });
+    void loadUsers();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [searchTerm]);
+
+  const filteredUsers = useMemo(() => {
+    if (roleFilter === "all") {
+      return users;
+    }
+
+    const roleMap: Record<string, string> = {
+      customer: "CUSTOMER",
+      seller: "VENDOR",
+      admin: "ADMIN",
+    };
+
+    return users.filter((user) => user.role === roleMap[roleFilter]);
+  }, [roleFilter, users]);
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
@@ -92,13 +82,10 @@ const UserTable: React.FC<UserTableProps> = ({ searchTerm, roleFilter }) => {
                 E-poçt
               </th>
               <th className="text-left py-4 px-6 font-semibold text-gray-700 text-sm">
-                Rolü
+                Rolu
               </th>
               <th className="text-left py-4 px-6 font-semibold text-gray-700 text-sm">
                 Qoşulma Tarixi
-              </th>
-              <th className="text-left py-4 px-6 font-semibold text-gray-700 text-sm">
-                Sifarişlər
               </th>
               <th className="text-left py-4 px-6 font-semibold text-gray-700 text-sm">
                 Status
@@ -109,48 +96,47 @@ const UserTable: React.FC<UserTableProps> = ({ searchTerm, roleFilter }) => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {filteredUsers.length > 0 ? (
+            {loading ? (
+              <tr>
+                <td colSpan={6} className="py-8 px-6 text-center text-gray-500">
+                  Yüklənir...
+                </td>
+              </tr>
+            ) : error ? (
+              <tr>
+                <td colSpan={6} className="py-8 px-6 text-center text-red-500">
+                  {error}
+                </td>
+              </tr>
+            ) : filteredUsers.length > 0 ? (
               filteredUsers.map((user) => (
                 <tr key={user.id} className="hover:bg-gray-50 transition">
                   <td className="py-4 px-6">
                     <div>
-                      <p className="font-semibold text-gray-900">
-                        {user.name}
-                      </p>
-                      <p className="text-sm text-gray-600">{user.phone}</p>
+                      <p className="font-semibold text-gray-900">{user.username}</p>
+                      <p className="text-sm text-gray-600">ID: {user.id}</p>
                     </div>
                   </td>
-                  <td className="py-4 px-6 text-gray-600 text-sm">
-                    {user.email}
-                  </td>
+                  <td className="py-4 px-6 text-gray-600 text-sm">{user.email}</td>
                   <td className="py-4 px-6">
                     <span
                       className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
-                        user.role === "admin"
+                        user.role === "ADMIN"
                           ? "bg-purple-100 text-purple-700"
-                          : user.role === "seller"
-                          ? "bg-blue-100 text-blue-700"
-                          : "bg-gray-100 text-gray-700"
+                          : user.role === "VENDOR"
+                            ? "bg-blue-100 text-blue-700"
+                            : "bg-gray-100 text-gray-700"
                       }`}
                     >
                       {roleLabels[user.role]}
                     </span>
                   </td>
                   <td className="py-4 px-6 text-gray-600 text-sm">
-                    {user.joinDate}
-                  </td>
-                  <td className="py-4 px-6 font-semibold text-gray-900">
-                    {user.orders}
+                    {new Date(user.createdAt).toLocaleDateString("az-AZ")}
                   </td>
                   <td className="py-4 px-6">
-                    <span
-                      className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
-                        user.status === "active"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-red-100 text-red-700"
-                      }`}
-                    >
-                      {user.status === "active" ? "Aktiv" : "Qeyri-aktiv"}
+                    <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+                      Aktiv
                     </span>
                   </td>
                   <td className="py-4 px-6">
@@ -162,11 +148,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchTerm, roleFilter }) => {
                         <Edit2 size={18} />
                       </button>
                       <button className="p-2 hover:bg-gray-100 rounded-lg transition text-gray-600 hover:text-red-600">
-                        {user.status === "active" ? (
-                          <ShieldOff size={18} />
-                        ) : (
-                          <Shield size={18} />
-                        )}
+                        <ShieldOff size={18} />
                       </button>
                     </div>
                   </td>
@@ -174,10 +156,8 @@ const UserTable: React.FC<UserTableProps> = ({ searchTerm, roleFilter }) => {
               ))
             ) : (
               <tr>
-                <td colSpan={7} className="py-8 px-6 text-center">
-                  <p className="text-gray-500">
-                    Axtarış kriteriyasına uyğun istifadəçi tapılmadı
-                  </p>
+                <td colSpan={6} className="py-8 px-6 text-center">
+                  <p className="text-gray-500">Axtarışa uyğun istifadəçi tapılmadı</p>
                 </td>
               </tr>
             )}

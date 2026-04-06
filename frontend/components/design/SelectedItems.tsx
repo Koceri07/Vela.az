@@ -1,16 +1,22 @@
-
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { mockProducts } from "@/app/(main)/collections/productSlice";
 import ProductCard from "@/components/common/ProductCard";
 import { useLanguage } from "@/context/LanguageContext";
+import { fetchProducts } from "@/lib/products";
+import type { Product } from "@/app/(main)/collections/productSlice";
 
 const SelectedItems = () => {
   const router = useRouter();
   const { t } = useLanguage();
-  const items = mockProducts.slice(0, 4);
+  const [items, setItems] = useState<Product[]>([]);
+
+  useEffect(() => {
+    void fetchProducts({ page: 0, size: 4 })
+      .then((products) => setItems(products.slice(0, 4)))
+      .catch(() => setItems([]));
+  }, []);
 
   return (
     <section className="py-24 bg-white">
@@ -29,11 +35,17 @@ const SelectedItems = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-          {items.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
-        </div>
+        {items.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+            {items.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-3xl border border-stone-100 bg-stone-50 px-6 py-12 text-center text-sm text-stone-500">
+            {t("coll.not_found")}
+          </div>
+        )}
       </div>
     </section>
   );

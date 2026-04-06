@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Search, Plus, Edit2, Trash2, Eye } from "lucide-react";
+import { Search, Plus } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import ProductTable from "@/components/admin/ProductTable";

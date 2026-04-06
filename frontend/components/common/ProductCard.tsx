@@ -2,10 +2,12 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { Heart, Share2, MessageCircle, Copy, Check, ShoppingBag } from "lucide-react";
 import { Product } from "@/app/(main)/collections/productSlice";
 import { useCart } from "@/context/CartContext";
 import { useLanguage } from "@/context/LanguageContext";
+import { getProductHref } from "@/lib/products";
 
 interface ProductCardProps {
   product: Product;
@@ -13,11 +15,13 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, activeTab = "rent" }) => {
-  const { addToCart, addToWishlist, removeFromWishlist, wishlist } = useCart();
+  const { addToWishlist, removeFromWishlist, wishlist } = useCart();
   const { t, language } = useLanguage();
   const [isCopied, setIsCopied] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [priceType, setPriceType] = useState<"rent" | "buy">(activeTab);
+  const localizedKey = language.toLowerCase();
+  const localizedProduct = product as unknown as Record<string, string | undefined>;
 
   const isInWishlist = wishlist.find((w) => w.id === product.id);
 
@@ -29,9 +33,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, activeTab = "rent" }
     } else {
       addToWishlist({
         id: product.id,
+        slug: product.slug,
         name: product.name,
         price: product.rentPrice,
-        image: product.image
+        image: product.image,
       });
     }
   };
@@ -39,7 +44,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, activeTab = "rent" }
   const handleShareWhatsApp = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    const text = encodeURIComponent(`Buna bax: ${product.name} - ${window.location.origin}/product/${product.id}`);
+    const text = encodeURIComponent(
+      `Buna bax: ${product.name} - ${window.location.origin}${getProductHref(product)}`,
+    );
     window.open(`https://wa.me/?text=${text}`, "_blank");
     setShowShareMenu(false);
   };
@@ -47,7 +54,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, activeTab = "rent" }
   const handleCopyLink = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    const url = `${window.location.origin}/product/${product.id}`;
+    const url = `${window.location.origin}${getProductHref(product)}`;
     navigator.clipboard.writeText(url).then(() => {
       setIsCopied(true);
       setTimeout(() => setIsCopied(false), 2000);
@@ -74,10 +81,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, activeTab = "rent" }
     <div className="group relative flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-transparent hover:border-[#8E6969]/10">
       {/* Image Container */}
       <div className="relative aspect-[3/4] overflow-hidden bg-gray-50">
-        <img
+        <Image
           src={product.image}
           alt={product.name}
-          className="w-full h-full object-cover transition duration-700 group-hover:scale-110"
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          className="object-cover transition duration-700 group-hover:scale-110"
         />
         
         {/* Badges */}
@@ -177,13 +186,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, activeTab = "rent" }
         <div className="space-y-1">
           <div className="flex justify-between items-start capitalize">
             <h3 className="text-sm font-semibold text-gray-800 tracking-tight group-hover:text-[#8E6969] transition duration-300">
-              {((product as any)[`name_${language.toLowerCase()}`]) || product.name}
+              {localizedProduct[`name_${localizedKey}`] || product.name}
             </h3>
             <span className="text-[10px] text-[#A37A7A] bg-[#A37A7A]/10 px-2 py-0.5 rounded-md font-bold">
               {product.size}
             </span>
           </div>
-          <p className="text-[11px] text-gray-400 uppercase tracking-widest">{((product as any)[`category_${language.toLowerCase()}`]) || product.category}</p>
+          <p className="text-[11px] text-gray-400 uppercase tracking-widest">
+            {localizedProduct[`category_${localizedKey}`] || product.category}
+          </p>
         </div>
 
         <div className="flex flex-col gap-3">

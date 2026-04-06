@@ -2,6 +2,7 @@
 
 // import React-a ehtiyac yoxdur
 import React from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -64,10 +65,12 @@ const PopularCategories = () => {
               onClick={() => router.push(cat.link)}
             >
               {/* Category componenti yarat */}
-              <img
+              <Image
                 src={cat.image}
                 alt={cat.title}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="absolute bottom-4 left-4 text-white">

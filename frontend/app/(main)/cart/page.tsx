@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Trash2 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
@@ -36,9 +37,11 @@ export default function CartPage() {
             {cart.map((item) => (
               <div key={item.id} className="flex gap-4 p-4 border rounded-lg">
                 {/* CartItem componenti yarat */}
-                <img
+                <Image
                   src={item.image}
                   alt={item.name}
+                  width={96}
+                  height={128}
                   className="w-24 h-32 object-cover rounded"
                 />
                 <div className="flex-1">

@@ -1,30 +1,53 @@
 "use client";
 
 import React, { useState } from "react";
-import { Store, Camera, MapPin, Info, Globe, CheckCircle, ArrowRight } from "lucide-react";
+import {
+  Store,
+  MapPin,
+  Mail,
+  Phone,
+  CheckCircle,
+  ArrowRight,
+} from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import { createStore, getApiErrorMessage } from "@/lib/api/client";
+import { getSessionUser } from "@/lib/api/session";
 
 const CreateStorePage = () => {
   const { t } = useLanguage();
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
   const [form, setForm] = useState({
-    storeName: "",
-    category: "Geuilmiş Geyim",
-    description: "",
+    name: "",
+    email: "",
     address: "",
-    website: "",
-    instagram: "",
-    logo: null as File | null,
+    phoneNumber: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Store Creation JSON Data:", JSON.stringify(form, null, 2));
-    setSubmitted(true);
+
+    const user = getSessionUser();
+    if (!user) {
+      setError("Mağaza yaratmaq üçün əvvəlcə daxil olun.");
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+      setError("");
+      await createStore(user.id, form);
+      setSubmitted(true);
+    } catch (submitError) {
+      setError(getApiErrorMessage(submitError, "Mağaza yaradılmadı."));
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -34,12 +57,14 @@ const CreateStorePage = () => {
           <div className="w-20 h-20 bg-[#8E6969] rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
             <CheckCircle className="text-white" size={40} />
           </div>
-          <h2 className="text-2xl font-serif font-bold text-[#4A3728] mb-3">{t("create_store.success_title")}</h2>
+          <h2 className="text-2xl font-serif font-bold text-[#4A3728] mb-3">
+            {t("create_store.success_title")}
+          </h2>
           <p className="text-gray-500 text-sm leading-relaxed mb-10">
             {t("create_store.success_desc")}
           </p>
           <button
-            onClick={() => window.location.href = "/"}
+            onClick={() => (window.location.href = "/")}
             className="w-full bg-[#8E6969] text-white py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[#725454] transition shadow-md"
           >
             {t("create_store.back_home")}
@@ -51,7 +76,6 @@ const CreateStorePage = () => {
 
   return (
     <main className="min-h-screen bg-[#FAF7F5] pb-20">
-      {/* Hero Banner */}
       <section className="bg-[#4A3728] text-white py-20 px-4 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-[#8E6969] rounded-full -mr-32 -mt-32 opacity-20 blur-3xl"></div>
         <div className="max-w-4xl mx-auto text-center relative z-10">
@@ -64,125 +88,83 @@ const CreateStorePage = () => {
         </div>
       </section>
 
-      {/* Form Container */}
       <section className="max-w-4xl mx-auto px-4 -mt-10 relative z-20">
         <form onSubmit={handleSubmit} className="space-y-8">
-          
-          {/* Main Info */}
-          <div className="bg-white rounded-2xl p-8 shadow-xl border border-stone-100 flex flex-col md:flex-row gap-10">
-            {/* Logo Upload */}
-            <div className="shrink-0 flex flex-col items-center space-y-4">
-              <div className="w-32 h-32 rounded-2xl bg-[#FAF7F5] border-2 border-dashed border-stone-200 flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer hover:border-[#8E6969] transition">
-                {form.logo ? (
-                  <img src={URL.createObjectURL(form.logo)} alt="Logo" className="w-full h-full object-cover" />
-                ) : (
-                  <>
-                    <Camera size={32} className="text-stone-300 group-hover:text-[#8E6969] transition" />
-                    <span className="text-[10px] text-stone-400 font-bold uppercase tracking-tighter mt-2">{t("create_store.upload_logo")}</span>
-                  </>
-                )}
-                <input 
-                  type="file" 
-                  className="absolute inset-0 opacity-0 cursor-pointer" 
-                  onChange={(e) => e.target.files && setForm({...form, logo: e.target.files[0]})}
+          <div className="bg-white rounded-2xl p-8 shadow-xl border border-stone-100 space-y-6">
+            <div>
+              <label className="block text-[11px] font-bold uppercase tracking-widest text-[#4A3728]/60 mb-2">
+                {t("create_store.store_name")}
+              </label>
+              <div className="relative">
+                <Store size={16} className="absolute left-4 top-3.5 text-stone-300" />
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  value={form.name}
+                  onChange={handleChange}
+                  className="w-full pl-11 pr-4 py-3 bg-[#FAF7F5] border border-stone-100 rounded-xl focus:outline-none focus:border-[#8E6969] transition text-sm"
                 />
               </div>
-              <p className="text-[10px] text-gray-400 max-w-[120px] text-center italic">{t("create_store.logo_desc")}</p>
             </div>
 
-            {/* Fields */}
-            <div className="flex-1 space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-[11px] font-bold uppercase tracking-widest text-[#4A3728]/60 mb-2">{t("create_store.store_name")} <span className="text-red-400">*</span></label>
-                  <div className="relative">
-                    <Store size={16} className="absolute left-4 top-3.5 text-stone-300" />
-                    <input 
-                      type="text" 
-                      name="storeName"
-                      required
-                      value={form.storeName}
-                      onChange={handleChange}
-                      placeholder="Məs. Elegant Boutique"
-                      className="w-full pl-11 pr-4 py-3 bg-[#FAF7F5] border border-stone-100 rounded-xl focus:outline-none focus:border-[#8E6969] transition text-sm"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold uppercase tracking-widest text-[#4A3728]/60 mb-2">{t("create_store.category")} <span className="text-red-400">*</span></label>
-                  <select 
-                    name="category"
-                    value={form.category}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 bg-[#FAF7F5] border border-stone-100 rounded-xl focus:outline-none focus:border-[#8E6969] transition text-sm appearance-none"
-                  >
-                    <option>Geyimlər (Yeni & Geyilmiş)</option>
-                    <option>Yalnız Yeni Geyim</option>
-                    <option>Yalnız Geyilmiş Geyim (Kirayə)</option>
-                    <option>Aksessuar və Ayaqqabı</option>
-                    <option>Böyük Ölçülü Geyim</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-bold uppercase tracking-widest text-[#4A3728]/60 mb-2">{t("create_store.about_store")} <span className="text-red-400">*</span></label>
-                <div className="relative">
-                  <Info size={16} className="absolute left-4 top-4 text-stone-300" />
-                  <textarea 
-                    name="description"
-                    required
-                    value={form.description}
-                    onChange={handleChange}
-                    rows={4}
-                    placeholder="Müştərilərinizə mağazanızın hansı növ geyimlər təklif etdiyi barədə qısa məlumat verin..."
-                    className="w-full pl-11 pr-4 py-4 bg-[#FAF7F5] border border-stone-100 rounded-xl focus:outline-none focus:border-[#8E6969] transition text-sm resize-none"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Social & Contact */}
-          <div className="bg-white rounded-2xl p-8 shadow-xl border border-stone-100 space-y-6">
-            <h2 className="text-lg font-serif font-bold text-[#4A3728] flex items-center gap-2">
-              <Globe size={20} className="text-[#8E6969]" /> {t("create_store.contact_integration")}
-            </h2>
-            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-[11px] font-bold uppercase tracking-widest text-[#4A3728]/60 mb-2">{t("create_store.address")}</label>
+                <label className="block text-[11px] font-bold uppercase tracking-widest text-[#4A3728]/60 mb-2">
+                  Email
+                </label>
                 <div className="relative">
-                  <MapPin size={16} className="absolute left-4 top-3.5 text-stone-300" />
-                  <input 
-                    type="text" 
-                    name="address"
-                    value={form.address}
+                  <Mail size={16} className="absolute left-4 top-3.5 text-stone-300" />
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    value={form.email}
                     onChange={handleChange}
-                    placeholder="Məs. Bakı şəh., Nizami küç. 45"
                     className="w-full pl-11 pr-4 py-3 bg-[#FAF7F5] border border-stone-100 rounded-xl focus:outline-none focus:border-[#8E6969] transition text-sm"
                   />
                 </div>
               </div>
+
               <div>
-                <label className="block text-[11px] font-bold uppercase tracking-widest text-[#4A3728]/60 mb-2">{t("create_store.instagram")}</label>
+                <label className="block text-[11px] font-bold uppercase tracking-widest text-[#4A3728]/60 mb-2">
+                  Telefon
+                </label>
                 <div className="relative">
-                  <div className="absolute left-4 top-3.5 text-stone-300 font-bold text-sm">@</div>
-                  <input 
-                    type="text" 
-                    name="instagram"
-                    value={form.instagram}
+                  <Phone size={16} className="absolute left-4 top-3.5 text-stone-300" />
+                  <input
+                    type="tel"
+                    name="phoneNumber"
+                    required
+                    value={form.phoneNumber}
                     onChange={handleChange}
-                    placeholder="mağaza_adım"
+                    placeholder="+994501234567"
                     className="w-full pl-11 pr-4 py-3 bg-[#FAF7F5] border border-stone-100 rounded-xl focus:outline-none focus:border-[#8E6969] transition text-sm"
                   />
                 </div>
               </div>
             </div>
+
+            <div>
+              <label className="block text-[11px] font-bold uppercase tracking-widest text-[#4A3728]/60 mb-2">
+                {t("create_store.address")}
+              </label>
+              <div className="relative">
+                <MapPin size={16} className="absolute left-4 top-3.5 text-stone-300" />
+                <input
+                  type="text"
+                  name="address"
+                  required
+                  value={form.address}
+                  onChange={handleChange}
+                  className="w-full pl-11 pr-4 py-3 bg-[#FAF7F5] border border-stone-100 rounded-xl focus:outline-none focus:border-[#8E6969] transition text-sm"
+                />
+              </div>
+            </div>
           </div>
 
-          {/* Submit */}
+          {error ? <p className="text-sm text-red-500">{error}</p> : null}
+
           <div className="flex flex-col md:flex-row items-center justify-between p-8 bg-[#8E6969] rounded-2xl shadow-xl text-white">
             <div className="mb-6 md:mb-0">
               <h3 className="text-xl font-serif font-bold mb-1">{t("create_store.submit_title")}</h3>
@@ -190,9 +172,10 @@ const CreateStorePage = () => {
             </div>
             <button
               type="submit"
-              className="bg-white text-[#8E6969] px-10 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:scale-105 transition-all flex items-center gap-2 shadow-lg"
+              disabled={submitting}
+              className="bg-white text-[#8E6969] px-10 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:scale-105 transition-all flex items-center gap-2 shadow-lg disabled:opacity-60"
             >
-              {t("create_store.submit_btn")} <ArrowRight size={16} />
+              {submitting ? "Göndərilir..." : t("create_store.submit_btn")} <ArrowRight size={16} />
             </button>
           </div>
         </form>

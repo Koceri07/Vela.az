@@ -2,6 +2,7 @@
 
 // import React-a ehtiyac yoxdur
 import React from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
@@ -14,10 +15,13 @@ const HeroPage = () => {
     <section className="relative h-[calc(100vh-80px)] w-full overflow-hidden bg-[#F9F6F3]">
       {/* Background Image -vale-woman.jpg */}
       <div className="absolute inset-0">
-        <img
+        <Image
           src="/mainPage/vale-woman.jpg"
           alt="Vela Hero"
-          className="w-full h-full object-cover object-top lg:object-center"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-top lg:object-center"
         />
         {/* Soft overlay for text readability */}
         <div className="absolute inset-0 bg-black/30"></div>

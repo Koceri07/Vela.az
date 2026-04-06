@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useRouter } from "next/navigation";
-import { CiMail, CiLocationOn } from "react-icons/ci";
+import { CiMail } from "react-icons/ci";
 import { BsTelephoneInbound } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
 import { useLanguage } from "@/context/LanguageContext";
