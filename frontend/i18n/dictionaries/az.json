@@ -50,7 +50,9 @@
     "test_1": "VELA sayəsində hər toya fərqli görünürəm. Kirayə sistemi əla işləyir!",
     "test_2": "Ailə üçün kombin tapmaq heç vaxt bu qədər asan olmamışdı. Uşaqlar da çox sevdi!",
     "test_3": "Kostyum keyfiyyəti mükəmməl idi. Satın almaq əvəzinə kirayə götürmək ən doğru qərar oldu.",
-    "age": "yaş"
+    "age": "yaş",
+    "store_title": "Mağazalara göz at",
+    "store_sub": "Ən yaxşı butiklər və satıcılar bir yerdə"
   },
   "cart": {
     "title": "Səbətim",
@@ -82,7 +84,10 @@
     "wedding": "Toy",
     "party": "Ziyafət",
     "ceremony": "Mərasim",
-    "not_found": "Seçilmiş filtrlərə uyğun məhsul tapılmadı."
+    "not_found": "Seçilmiş filtrlərə uyğun məhsul tapılmadı.",
+    "assistant_size": "Sizə hansı ölçü lazımdır?",
+    "assistant_price": "Büdcəniz nə qədərdir?",
+    "assistant_occasion": "Hansı tədbirə hazırlaşırsınız?"
   },
   "search": {
     "placeholder": "Nə axtarırsınız? (məs: Atlas, Gəlinlik...)",
@@ -91,7 +96,13 @@
     "per_rent": "/ kirayə",
     "view_product": "Məhsula bax",
     "not_found": "ilə bağlı məhsul tapılmadı",
-    "tags": ["Ziyafət Geyimi", "Gəlinlik", "Atlas", "Kostyum", "Uşaq"]
+    "tags": {
+      "evening": "Ziyafət Geyimi",
+      "bridal": "Gəlinlik",
+      "satin": "Atlas",
+      "suit": "Kostyum",
+      "kids": "Uşaq"
+    }
   },
   "product": {
     "new": "YENİ",
@@ -172,7 +183,8 @@
     "agreement_text_3": "və",
     "agreement_text_4": "İstifadəçi Şərtlərini",
     "agreement_text_5": "qəbul etdiyinizi təsdiqləyirsiniz.",
-    "submit": "Elanı Göndər"
+    "submit": "Elanı Göndər",
+    "cat_none": "Həmkarlar / Heç biri"
   },
   "create_store": {
     "success_title": "Müraciətiniz qəbul edildi!",
@@ -208,7 +220,7 @@
     "name": "Ad",
     "phone": "Telefon",
     "email": "E-poçt",
-    "message": "Siz dəymə",
+    "message": "Sizin ismarıcınız",
     "send": "Göndər"
   },
   "privacy": {
@@ -251,54 +263,8 @@
     "goal_desc": "Məqsədimiz tədbir geyimləri üçün etibarlı, sadə və təmiz bir onlayn məkana sahib olmaqdır."
   },
   "terms": {
-    "title": "İstifadəçi Şərtləri",
+    "title": "İstifadəçi şərtləri",
     "desc": "Bu sənəd həm alıcılar, həm satıcılar, həm də sadəcə sayta baxanlar üçündür.",
-    "section_1": "Ümumi müddəalar",
-    "section_1_text": "Vela.az (bundan sonra \"Platforma\") istifadəçilərə tədbir geyimləri ilə bağlı pulsuz elan yerləşdirmək və bu elanlara baxmaq imkanı yaradan onlayn resursdur.",
-    "section_1_2": "Platforma alıcı ilə satıcı arasında heç bir əqdin tərəfi deyil. Alqı-satqı, kirayə, depozit, çatdırılma və digər şərtlər tamamilə istifadəçilərin öz aralarında razılaşdırdığı məsələlərdir.",
-    "section_1_3": "Platformadan istifadə etməklə siz bu şərtləri oxuduğunuzu və qəbul etdiyinizi bildirirsiniz.",
-    "section_2": "Qeydiyyat və hesab",
-    "section_2_text": "Elan yerləşdirmək üçün qeydiyyatdan keçmək lazımdır. Qeydiyyat zamanı doğru ad, soyad, əlaqə nömrəsi və e-poçt təqdim etməlisiniz.",
-    "section_2_2": "Hesabınızı başqaları ilə paylaşmayın. Hesabınızla edilən bütün əməliyyatlardan siz məsulsunuz.",
-    "section_2_3": "18 yaşı tamam olmamış şəxslər yalnız valideyn icazəsi ilə qeydiyyatdan keçə bilər.",
-    "section_3": "İstifadəçi Əməliyyatları",
-    "section_3_text": "Platformamızın şərtlərinə uyğun olmayan, düzmə, təhqiredici, cinsi yönümlü, ırkçı, münaqişə doğuran, şiddətli və ya qanunsuz elanlar yerləşdirmə qəti halda qadağandır.",
-    "section_4": "Alıcı və satıcı arasında əlaqə",
-    "section_4_1": "Elanın altında satıcının telefon nömrəsi (əgər satıcı gizlətmək istəmirsə) və ya mesaj forması olur. Bütün danışıqlar, razılaşmalar, ödənişlər və təhvil-təslim birbaşa tərəflər arasında aparılır.",
-    "section_4_2": "Kirayə əməliyyatlarında qiymət, müddət, depozit, gecikmə halında tətbiq olunacaq cərimələr və qaytarılma şərtləri tərəflər tərəfindən yazılı (WhatsApp, SMS və s.) razılaşdırılmalıdır. Platforma bu şərtlərin icrasına görə məsuliyyət daşımır.",
-    "section_5": "Məsuliyyətin məhdudlaşdırılması",
-    "section_5_1": "Platforma satılan və ya kirayə verilən məhsulun keyfiyyətinə, təmizliyinə, sazlığına, təhlükəsizliyinə, vaxtında çatdırılmasına və ya geri qaytarılmasına heç bir zəmanət vermir.",
-    "section_5_2": "İstifadəçilər arasında yaranan maliyyə itkiləri, dəymiş zərər, aldadılma, mübahisələr və digər problemlər yalnız tərəflərin öz aralarında həll edilir. Platforma bu cür mübahisələrdə vasitəçi və ya hakim rolunu oynamır.",
-    "section_5_3": "Platforma texniki səbəblərdən (server problemləri, internet provayderlərinin məhdudiyyətləri və s.) müvəqqəti olaraq əlçatmaz ola bilər. Bu hallarda dəymiş itkilərə görə məsuliyyət daşımırıq.",
-    "section_6": "Dəyişikliklər",
-    "section_6_text": "Bu şərtlər vaxtaşırı yenilənə bilər. Yeniliklər sayt üzərində yerləşdirildiyi gündən qüvvəyə minir.",
-    "section_7": "Əlaqə",
-    "section_7_text": "Suallarınız üçün vela7az@gmail.com ünvanına yazın."
-  },
-  "seller_agreement": {
-    "title": "Satıcı Müqaviləsi",
-    "desc": "Saytda elan yerləşdirmədən əvvəl bu müqavilə ilə tanış olmaq zəruridir.",
-    "section_1": "Satıcının Məsuliyyətləri",
-    "section_1_text": "Satıcı yerləşdirdiyiniz elanın məlumatlarının düzgün və çəkişməz olmasından məsuldur. Satışa çıxardığınız məhsulun vəziyyəti, ölçüsü və digər xüsusiyyətləri doğru şəkildə təsvir etməlisiniz.",
-    "section_2": "Ödənişlər və Haqqlar",
-    "section_2_text": "Əsas elan xidməti pulsuz olmaqla birlikdə, xüsusi xidmətlər (prominent göstəriş, vip listelik və s.) üçün haqqlar tətbiq oluna biləcədir.",
-    "section_3": "Elan Müddəti",
-    "section_3_text": "Elanlar 30 gün müddətinə yerləşən kimi, satıcı istər əvvəl silib istər sonra yeniləyə bilər.",
-    "section_4": "Rəy Sistemi",
-    "section_4_text": "Alıcılar satıcı haqq sentfləri qoya bilərlər. Fəsadlı rəylər müəssisə doyça yenidən nəzərə ola biləl, hər zaman şərit almaq azaddır.",
-    "section_5": "Qadağalar",
-    "section_5_text": "Saxlanılan texniki qadağalara: qeyri-qanuni məhsuls elanlma, yalançı rəylər, hiylə, təhlükəsiz məhsullar olmayan şeylər düzmə satış.",
-    "image_requirements": "Şəkil Tələbləri",
-    "image_requirement_1_title": "Aydınlıq:",
-    "image_requirement_1_text": "Şəkillər aydın, yüksək keyfiyyətli və fokusda olmalıdır.",
-    "image_requirement_2_title": "Fon:",
-    "image_requirement_2_text": "Üstünlük təşkil edən hallarda təmiz ağ və ya açıq fon, kənar əşyalar olmamalıdır.",
-    "image_requirement_3_title": "İmtina Hüququ:",
-    "image_requirement_3_text": "Şəkillər tələblərə cavab vermədikdə, Platforma məhsulu elana çıxarmaqdan imtina edə bilər.",
-    "phone": "077 127 97 59",
-    "email": "vela7az@gmail.com"
-  },
-  "terms": {
     "section_1": "Ümumi müddəalar",
     "section_1_1": "Vela.az (bundan sonra \"Platforma\") istifadəçilərə tədbir geyimləri ilə bağlı pulsuz elan yerləşdirmək və bu elanlara baxmaq imkanı yaradan onlayn resursdur.",
     "section_1_2": "Platforma alıcı ilə satıcı arasında heç bir əqdin tərəfi deyil. Alqı-satqı, kirayə, depozit, çatdırılma və digər şərtlər tamamilə istifadəçilərin öz aralarında razılaşdırdığı məsələlərdir.",
@@ -322,6 +288,29 @@
     "section_6_text": "Bu şərtlər vaxtaşırı yenilənə bilər. Yeniliklər saytda yerləşdirildiyi gündən qüvvəyə minir.",
     "section_7": "Əlaqə",
     "section_7_text": "Suallarınız üçün: vela7az@gmail.com"
+  },
+  "seller_agreement": {
+    "title": "Satıcı Müqaviləsi",
+    "desc": "Saytda elan yerləşdirmədən əvvəl bu müqavilə ilə tanış olmaq zəruridir.",
+    "section_1": "Satıcının Məsuliyyətləri",
+    "section_1_text": "Satıcı yerləşdirdiyiniz elanın məlumatlarının düzgün və çəkişməz olmasından məsuldur. Satışa çıxardığınız məhsulun vəziyyəti, ölçüsü və digər xüsusiyyətləri doğru şəkildə təsvir etməlisiniz.",
+    "section_2": "Ödənişlər və Haqqlar",
+    "section_2_text": "Əsas elan xidməti pulsuz olmaqla birlikdə, xüsusi xidmətlər (prominent göstəriş, vip listelik və s.) üçün haqqlar tətbiq oluna biləcədir.",
+    "section_3": "Elan Müddəti",
+    "section_3_text": "Elanlar 30 gün müddətinə yerləşən kimi, satıcı istər əvvəl silib istər sonra yeniləyə bilər.",
+    "section_4": "Rəy Sistemi",
+    "section_4_text": "Alıcılar satıcı haqq sentfləri qoya bilərlər. Fəsadlı rəylər müəssisə doyça yenidən nəzərə ola biləl, hər zaman şərit almaq azaddır.",
+    "section_5": "Qadağalar",
+    "section_5_text": "Saxlanılan texniki qadağalara: qeyri-qanuni məhsuls elanlma, yalançı rəylər, hiylə, təhlükəsiz məhsullar olmayan şeylər düzmə satış.",
+    "image_requirements": "Şəkil Tələbləri",
+    "image_requirement_1_title": "Aydınlıq:",
+    "image_requirement_1_text": "Şəkillər aydın, yüksək keyfiyyətli və fokusda olmalıdır.",
+    "image_requirement_2_title": "Fon:",
+    "image_requirement_2_text": "Üstünlük təşkil edən hallarda təmiz ağ və ya açıq fon, kənar əşyalar olmamalıdır.",
+    "image_requirement_3_title": "İmtina Hüququ:",
+    "image_requirement_3_text": "Şəkillər tələblərə cavab vermədikdə, Platforma məhsulu elana çıxarmaqdan imtina edə bilər.",
+    "phone": "077 127 97 59",
+    "email": "vela7az@gmail.com"
   },
   "admin": {
     "dashboard": {
@@ -404,5 +393,17 @@
       "settings": "Tənzimləmələr",
       "login": "Giriş"
     }
+  },
+  "category": {
+    "gelinlikler": "Gəlinliklər",
+    "kostyumlar": "Kişi Kostyumları",
+    "xanim_geyimleri": "Xanım Geyimləri",
+    "usaq_geyimleri": "Uşaq Geyimləri",
+    "hero_d": "Hər zövqə və hər tədbirə uyğun mükəmməl geyim kolleksiyası",
+    "count_pre": "Cəmi ",
+    "count_post": " məhsul tapıldı",
+    "empty": "Bu kateqoriyada hələ məhsul yoxdur.",
+    "not_found_t": "Kateqoriya tapılmadı",
+    "not_found_d": "Axtardığınız səhifə mövcud deyil və ya silinib."
   }
 }

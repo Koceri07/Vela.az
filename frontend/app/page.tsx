@@ -1,6 +1,6 @@
 
 import HeroPage from "@/components/design/heroPage";
-import SelectedItems from "@/components/design/SelectedItems";
+import StoreBrowser from "@/components/design/StoreBrowser";
 import PopularCategories from "@/components/design/PopularCategories";
 
 export default function Home() {
@@ -8,7 +8,7 @@ export default function Home() {
     <>
       <HeroPage />
       <PopularCategories />
-      <SelectedItems />
+      <StoreBrowser />
     </>
   );
 }

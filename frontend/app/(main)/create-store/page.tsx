@@ -8,10 +8,12 @@ import {
   Phone,
   CheckCircle,
   ArrowRight,
+  Camera,
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { createStore, getApiErrorMessage } from "@/lib/api/client";
 import { getSessionUser } from "@/lib/api/session";
+import { saveLocalStore } from "@/lib/stores";
 
 const CreateStorePage = () => {
   const { t } = useLanguage();
@@ -23,28 +25,61 @@ const CreateStorePage = () => {
     email: "",
     address: "",
     phoneNumber: "",
+    logo: null as File | null,
   });
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setForm({ ...form, logo: file });
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setLogoPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const user = getSessionUser();
-    if (!user) {
-      setError("Mağaza yaratmaq üçün əvvəlcə daxil olun.");
-      return;
-    }
-
+    
     try {
       setSubmitting(true);
       setError("");
-      await createStore(user.id, form);
+      
+      // Try real API first if user is logged in
+      if (user) {
+        try {
+          await createStore(user.id, {
+            name: form.name,
+            email: form.email,
+            address: form.address,
+            phoneNumber: form.phoneNumber,
+          });
+        } catch (apiErr) {
+          console.warn("API failed, falling back to local storage", apiErr);
+        }
+      }
+
+      // Always save locally so it shows up in "Browse Stores" for the current session/browser
+      saveLocalStore({
+        name: form.name,
+        email: form.email,
+        address: form.address,
+        phoneNumber: form.phoneNumber,
+        logoUrl: logoPreview || undefined,
+      });
+
       setSubmitted(true);
     } catch (submitError) {
-      setError(getApiErrorMessage(submitError, "Mağaza yaradılmadı."));
+      setError(getApiErrorMessage(submitError, "Xəta baş verdi."));
     } finally {
       setSubmitting(false);
     }
@@ -63,12 +98,20 @@ const CreateStorePage = () => {
           <p className="text-gray-500 text-sm leading-relaxed mb-10">
             {t("create_store.success_desc")}
           </p>
-          <button
-            onClick={() => (window.location.href = "/")}
-            className="w-full bg-[#8E6969] text-white py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[#725454] transition shadow-md"
-          >
-            {t("create_store.back_home")}
-          </button>
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={() => (window.location.href = "/create-listing")}
+              className="w-full bg-[#8E6969] text-white py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[#725454] transition shadow-md"
+            >
+              Məhsul Əlavə Et
+            </button>
+            <button
+              onClick={() => (window.location.href = "/")}
+              className="w-full bg-white border-2 border-[#8E6969] text-[#8E6969] py-3.5 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-stone-50 transition"
+            >
+              {t("create_store.back_home")}
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -91,6 +134,31 @@ const CreateStorePage = () => {
       <section className="max-w-4xl mx-auto px-4 -mt-10 relative z-20">
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="bg-white rounded-2xl p-8 shadow-xl border border-stone-100 space-y-6">
+            <div className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-stone-100 rounded-3xl bg-stone-50/50 group hover:border-[#8E6969]/30 transition-colors relative transition-all duration-300">
+               {logoPreview ? (
+                 <div className="relative w-32 h-32 rounded-2xl overflow-hidden shadow-md">
+                   <img src={logoPreview} alt="Logo Preview" className="w-full h-full object-cover" />
+                   <button 
+                    type="button"
+                    onClick={() => { setLogoPreview(null); setForm({...form, logo: null}); }}
+                    className="absolute top-1 right-1 bg-black/50 text-white p-1 rounded-full hover:bg-black/70 transition"
+                   >
+                     <CheckCircle size={14} />
+                   </button>
+                 </div>
+               ) : (
+                <label className="flex flex-col items-center cursor-pointer">
+                  <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center shadow-sm text-stone-300 group-hover:text-[#8E6969] group-hover:scale-110 transition-all duration-500">
+                    <Camera size={32} />
+                  </div>
+                  <span className="mt-4 text-[10px] font-bold uppercase tracking-widest text-stone-400 group-hover:text-[#4A3728] transition-colors">
+                    {t("create_store.upload_logo")}
+                  </span>
+                  <input type="file" className="hidden" accept="image/*" onChange={handleLogoChange} />
+                </label>
+               )}
+            </div>
+
             <div>
               <label className="block text-[11px] font-bold uppercase tracking-widest text-[#4A3728]/60 mb-2">
                 {t("create_store.store_name")}

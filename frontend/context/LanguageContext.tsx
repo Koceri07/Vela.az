@@ -1,8 +1,10 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
+import azDictionary from "@/i18n/dictionaries/az.json";
 
 type Language = "AZ" | "RU" | "EN";
+
 interface Dictionary {
   [key: string]: string | string[] | Dictionary | undefined;
 }
@@ -22,12 +24,17 @@ const dictionaries: Record<Language, () => Promise<Dictionary>> = {
 };
 
 const defaultAzDictionary: Dictionary = {
-  header: {
-    create_store: "Mağaza Yarat",
-    create_listing: "Elan Yarat",
-    login: "Daxil ol",
-    register: "Qeydiyyat",
-    search: "Axtarış",
+  ...(azDictionary as Dictionary),
+  admin: {
+    ...(((azDictionary as Dictionary).admin as Dictionary) ?? {}),
+    orders: {
+      ...((((azDictionary as Dictionary).admin as Dictionary)?.orders as Dictionary) ?? {}),
+      more_filters: "Daha çox filtr",
+    },
+    sidebar: {
+      ...((((azDictionary as Dictionary).admin as Dictionary)?.sidebar as Dictionary) ?? {}),
+      logout: "Çıxış",
+    },
   },
 };
 
@@ -55,8 +62,17 @@ function getNestedValue(source: Dictionary | string | string[] | undefined, keys
 }
 
 export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
-  const [language, setLanguageState] = useState<Language>(getSavedLanguage);
+  const [language, setLanguageState] = useState<Language>("AZ");
   const [dictionary, setDictionary] = useState<Dictionary>(defaultAzDictionary);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = window.localStorage.getItem("VELA_LANG");
+      if (saved === "AZ" || saved === "RU" || saved === "EN") {
+        setLanguageState(saved);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     let isMounted = true;

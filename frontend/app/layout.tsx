@@ -6,11 +6,13 @@ import "@/styles/globals.css";
 
 export default function RootLayout({
   children,
+  language = "az",
 }: {
   children: React.ReactNode;
+  language?: string;
 }) {
   return (
-    <html lang="az">
+    <html lang={language}>
       <body className="flex flex-col min-h-screen" cz-shortcut-listen="true">
         <LanguageProvider>
           <CartProvider>

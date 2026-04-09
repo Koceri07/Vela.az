@@ -137,13 +137,70 @@ export function mapCategoryParamToBackendCategory(
   }
 }
 
+const LOCAL_PRODUCTS_KEY = "vela_local_products";
+
+export function getLocalProducts(): Product[] {
+  if (typeof window === "undefined") return [];
+  const stored = localStorage.getItem(LOCAL_PRODUCTS_KEY);
+  return stored ? JSON.parse(stored) : [];
+}
+
+export function saveLocalProduct(product: Partial<Product>) {
+  if (typeof window === "undefined") return;
+  const current = getLocalProducts();
+  const newProduct: Product = {
+    id: Date.now(),
+    slug: `local-${Date.now()}`,
+    name: product.name || "Untitled",
+    description: product.description || "",
+    price: product.price || 0,
+    rentPrice: product.rentPrice || 0,
+    sellPrice: product.sellPrice || 0,
+    image: product.image || FALLBACK_PRODUCT_IMAGE,
+    category: product.category || "UNISEX",
+    backendCategory: product.backendCategory || "UNISEX",
+    occasion: product.occasion || "UNISEX",
+    size: product.size || "M",
+    stockQuantity: 1,
+    storeId: product.storeId || 0,
+    storeName: product.storeName || "My Store",
+    createdAt: new Date().toISOString(),
+    isNew: true,
+    isLocal: true,
+    ...product,
+  };
+  localStorage.setItem(LOCAL_PRODUCTS_KEY, JSON.stringify([newProduct, ...current]));
+  return newProduct;
+}
+
+export function deleteLocalProduct(id: number) {
+  if (typeof window === "undefined") return;
+  const current = getLocalProducts();
+  const filtered = current.filter((p) => p.id !== id);
+  localStorage.setItem(LOCAL_PRODUCTS_KEY, JSON.stringify(filtered));
+}
+
+export function deleteProductsByStoreId(storeId: number) {
+  if (typeof window === "undefined") return;
+  const current = getLocalProducts();
+  const filtered = current.filter((p) => p.storeId !== storeId);
+  localStorage.setItem(LOCAL_PRODUCTS_KEY, JSON.stringify(filtered));
+}
+
 export async function fetchProducts(params?: { page?: number; size?: number }) {
-  const page = await getAllProducts(params);
-  return page.content.map(mapProductDtoToProduct);
+  const local = getLocalProducts();
+  try {
+    const page = await getAllProducts(params);
+    const apiProducts = page.content.map(mapProductDtoToProduct);
+    return [...local, ...apiProducts];
+  } catch (error) {
+    console.warn("API Error, falling back to local and demo products:", error);
+    return [...local, ...demoProducts];
+  }
 }
 
 export function getDemoProducts() {
-  return demoProducts;
+  return [...getLocalProducts(), ...demoProducts];
 }
 
 export async function fetchProductByIdentifier(identifier: string) {

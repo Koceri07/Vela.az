@@ -15,6 +15,8 @@ const CollectionsPage = () => {
   const [activeTab, setActiveTab] = useState("rent");
   const [showFilters, setShowFilters] = useState(true);
   const [priceRange, setPriceRange] = useState<number>(2000);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedOccasion, setSelectedOccasion] = useState<string | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -73,10 +75,12 @@ const CollectionsPage = () => {
       const currentPrice = activeTab === "rent" ? item.rentPrice : item.sellPrice;
       const matchesPrice = currentPrice <= priceRange;
       const matchesCategory = !backendCategory || item.backendCategory === backendCategory;
+      const matchesSize = !selectedSize || item.size === selectedSize;
+      const matchesOccasion = !selectedOccasion || item.occasion === selectedOccasion || item.category === selectedOccasion;
 
-      return matchesPrice && matchesCategory;
+      return matchesPrice && matchesCategory && matchesSize && matchesOccasion;
     });
-  }, [activeTab, categoryParam, priceRange, products]);
+  }, [activeTab, categoryParam, priceRange, selectedSize, selectedOccasion, products]);
 
   return (
     <div className="min-h-screen bg-white font-sans">
@@ -125,12 +129,29 @@ const CollectionsPage = () => {
               <X size={20} />
             </button>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
               <div className="space-y-4">
-                <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500">
-                  {t("coll.price")} ({activeTab === "rent" ? t("coll.rent") : t("coll.buy")})
+                <h3 className="text-xs font-bold uppercase tracking-widest text-[#8E6969] mb-4">
+                  {t("coll.assistant_size")}
                 </h3>
-                <span className="text-xs font-bold text-[#8E6969]">{priceRange} AZN</span>
+                <div className="flex flex-wrap gap-2">
+                  {["XS", "S", "M", "L", "XL"].map((sz) => (
+                    <button
+                      key={sz}
+                      onClick={() => setSelectedSize(selectedSize === sz ? null : sz)}
+                      className={`px-4 py-2 rounded-xl text-xs font-bold transition ${selectedSize === sz ? "bg-[#8E6969] text-white shadow-sm" : "bg-white border border-gray-200 text-gray-600 hover:border-[#8E6969]"}`}
+                    >
+                      {sz}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="text-xs font-bold uppercase tracking-widest text-[#8E6969] mb-4">
+                  {t("coll.assistant_price")} <span className="opacity-70 normal-case ml-1">({activeTab === "rent" ? t("coll.rent") : t("coll.buy")})</span>
+                </h3>
+                <span className="text-xs font-bold text-gray-700">{priceRange} AZN</span>
                 <div className="pt-2">
                   <input
                     type="range"
@@ -141,6 +162,27 @@ const CollectionsPage = () => {
                     onChange={(e) => setPriceRange(Number(e.target.value))}
                     className="w-full h-1.5 bg-gray-200 rounded-full appearance-none cursor-pointer accent-[#8E6969]"
                   />
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="text-xs font-bold uppercase tracking-widest text-[#8E6969] mb-4">
+                  {t("coll.assistant_occasion")}
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {[t("coll.all"), "Toy", "Ziyafət", "Mərasim", "Nişan", "Məzuniyyət"].map((occ, idx) => {
+                    const isAll = idx === 0;
+                    const val = isAll ? null : occ;
+                    return (
+                      <button
+                        key={occ}
+                        onClick={() => setSelectedOccasion(val)}
+                        className={`px-4 py-2 rounded-xl text-xs font-bold transition flex-grow sm:flex-none text-center ${selectedOccasion === val ? "bg-[#8E6969] text-white shadow-sm" : "bg-white border border-gray-200 text-gray-600 hover:border-[#8E6969]"}`}
+                      >
+                        {occ}
+                      </button>
+                    )
+                  })}
                 </div>
               </div>
             </div>

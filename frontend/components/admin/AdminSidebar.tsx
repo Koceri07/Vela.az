@@ -12,6 +12,7 @@ import {
   Settings,
   LogOut,
   ChevronRight,
+  Store,
 } from "lucide-react";
 
 const AdminSidebar = ({ isOpen }: { isOpen: boolean }) => {
@@ -21,7 +22,7 @@ const AdminSidebar = ({ isOpen }: { isOpen: boolean }) => {
   const menuItems = [
     { icon: LayoutDashboard, label: t("admin.sidebar.dashboard"), href: "/admin" },
     { icon: ShoppingBag, label: t("admin.sidebar.products"), href: "/admin/products" },
-    { icon: ShoppingCart, label: t("admin.sidebar.orders"), href: "/admin/orders" },
+    { icon: Store, label: "Mağazalar", href: "/admin/stores" },
     { icon: Users, label: t("admin.sidebar.users"), href: "/admin/users" },
     { icon: Settings, label: t("admin.sidebar.settings"), href: "/admin/settings" },
   ];

@@ -20,4 +20,5 @@ export interface Product {
   storeName?: string;
   createdAt?: string;
   isNew?: boolean;
+  isLocal?: boolean;
 }

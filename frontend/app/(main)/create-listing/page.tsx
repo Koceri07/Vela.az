@@ -10,14 +10,15 @@ import {
 } from "@/lib/api/client";
 import { getSessionUser } from "@/lib/api/session";
 import type { ProductCategory } from "@/lib/api/types";
+import { getLocalStores } from "@/lib/stores";
+import { saveLocalProduct } from "@/lib/products";
 
 const categoryMap: Record<string, ProductCategory> = {
   bridal: "WOMEN",
-  women: "WOMEN",
+  evening: "WOMEN",
   mens: "MEN",
   kids: "KIDS",
-  accessories: "UNISEX",
-  other: "UNISEX",
+  none: "UNISEX",
 };
 
 const CreateListingPage = () => {
@@ -40,6 +41,8 @@ const CreateListingPage = () => {
     rentPrice: "",
     sellPrice: "",
     description: "",
+    size: "",
+    occasion: "",
     photos: [] as File[],
   });
 
@@ -57,12 +60,21 @@ const CreateListingPage = () => {
           isActive: store.active,
         }),
       )
-      .catch(() =>
-        setStoreState({
-          id: null,
-          isActive: false,
-        }),
-      )
+      .catch(() => {
+        // Fallback to local store detection
+        const localStores = getLocalStores();
+        if (localStores.length > 0) {
+          setStoreState({
+            id: localStores[0].id,
+            isActive: true,
+          });
+        } else {
+          setStoreState({
+            id: null,
+            isActive: false,
+          });
+        }
+      })
       .finally(() => setStoreLoading(false));
   }, []);
 
@@ -93,13 +105,38 @@ const CreateListingPage = () => {
       setSubmitting(true);
       setError("");
 
-      await createProduct(storeState.id, {
+      const category = categoryMap[form.category] || "UNISEX";
+      
+      // Try real API
+      try {
+        await createProduct(storeState.id, {
+          name: form.title,
+          description: form.description,
+          price: Number(form.sellPrice || form.rentPrice || 0),
+          dailyPrice: Number(form.rentPrice || form.sellPrice || 0),
+          category: category,
+          stockQuantity: 1,
+          size: form.size || undefined,
+          occasion: form.occasion || undefined,
+        });
+      } catch (apiErr) {
+        console.warn("API Create Product failed, falling back to local storage", apiErr);
+      }
+
+      // Always save locally for this demo
+      const localStore = getLocalStores().find(s => s.id === storeState.id);
+      saveLocalProduct({
         name: form.title,
         description: form.description,
         price: Number(form.sellPrice || form.rentPrice || 0),
-        dailyPrice: Number(form.rentPrice || form.sellPrice || 0),
-        category: categoryMap[form.category] || "UNISEX",
-        stockQuantity: 1,
+        rentPrice: Number(form.rentPrice || 0),
+        sellPrice: Number(form.sellPrice || 0),
+        category: category,
+        backendCategory: category,
+        size: form.size || "M",
+        occasion: form.occasion || "Toy",
+        storeId: storeState.id,
+        storeName: localStore?.name || "My Store",
       });
 
       setSubmitted(true);
@@ -177,17 +214,56 @@ const CreateListingPage = () => {
                   className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#8E6969] bg-gray-50 appearance-none pr-10"
                 >
                   <option value="">{t("create_listing.select")}</option>
-                  <option value="bridal">Gəlinliklər</option>
-                  <option value="women">Xanım Geyimləri</option>
-                  <option value="mens">Kişi Kostyumları</option>
-                  <option value="kids">Uşaq Geyimləri</option>
-                  <option value="accessories">Aksesuarlar</option>
-                  <option value="other">Digər</option>
+                  <option value="bridal">{t("create_listing.cat_1")}</option>
+                  <option value="evening">{t("create_listing.cat_2")}</option>
+                  <option value="mens">{t("create_listing.cat_3")}</option>
+                  <option value="kids">{t("create_listing.cat_4")}</option>
+                  <option value="none">{t("create_listing.cat_none")}</option>
                 </select>
                 <ChevronDown
                   size={16}
                   className="absolute right-4 top-10 text-gray-400 pointer-events-none"
                 />
+              </div>
+
+              <div className="relative">
+                <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">
+                  Ölçü
+                </label>
+                <select
+                  name="size"
+                  value={form.size}
+                  onChange={handleChange}
+                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#8E6969] bg-gray-50 appearance-none pr-10"
+                >
+                  <option value="">Seçin</option>
+                  <option value="XS">XS</option>
+                  <option value="S">S</option>
+                  <option value="M">M</option>
+                  <option value="L">L</option>
+                  <option value="XL">XL</option>
+                </select>
+                <ChevronDown size={16} className="absolute right-4 top-10 text-gray-400 pointer-events-none" />
+              </div>
+
+              <div className="relative">
+                <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">
+                  Münasibət
+                </label>
+                <select
+                  name="occasion"
+                  value={form.occasion}
+                  onChange={handleChange}
+                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#8E6969] bg-gray-50 appearance-none pr-10"
+                >
+                  <option value="">Seçin</option>
+                  <option value="Toy">Toy</option>
+                  <option value="Ziyafət">Ziyafət</option>
+                  <option value="Mərasim">Mərasim</option>
+                  <option value="Nişan">Nişan</option>
+                  <option value="Məzuniyyət">Məzuniyyət</option>
+                </select>
+                <ChevronDown size={16} className="absolute right-4 top-10 text-gray-400 pointer-events-none" />
               </div>
             </div>
           </div>

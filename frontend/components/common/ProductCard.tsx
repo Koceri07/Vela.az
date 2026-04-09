@@ -3,11 +3,12 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Heart, Share2, MessageCircle, Copy, Check, ShoppingBag } from "lucide-react";
+import { Heart, Share2, MessageCircle, Copy, Check, ShoppingBag, Trash2 } from "lucide-react";
 import { Product } from "@/app/(main)/collections/productSlice";
 import { useCart } from "@/context/CartContext";
 import { useLanguage } from "@/context/LanguageContext";
-import { getProductHref } from "@/lib/products";
+import { getProductHref, deleteLocalProduct } from "@/lib/products";
+import { getSessionUser } from "@/lib/api/session";
 
 interface ProductCardProps {
   product: Product;
@@ -22,6 +23,17 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, activeTab = "rent" }
   const [priceType, setPriceType] = useState<"rent" | "buy">(activeTab);
   const localizedKey = language.toLowerCase();
   const localizedProduct = product as unknown as Record<string, string | undefined>;
+  const user = getSessionUser();
+  const isAdmin = user?.role === "ADMIN";
+
+  const handleDeleteProduct = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (confirm("Bu elanı silmək istədiyinizə əminsiniz?")) {
+      deleteLocalProduct(product.id);
+      window.location.reload();
+    }
+  };
 
   const isInWishlist = wishlist.find((w) => w.id === product.id);
 
@@ -100,6 +112,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, activeTab = "rent" }
 
         {/* Action Overlays */}
         <div className="absolute top-4 right-4 flex flex-col gap-2 z-20">
+          {(isAdmin || product.isLocal) && (
+            <button
+              onClick={handleDeleteProduct}
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-red-50/90 backdrop-blur-md shadow-lg transition-all duration-300 hover:scale-110 text-red-500 hover:bg-red-500 hover:text-white"
+              title="Elanı sil"
+            >
+              <Trash2 size={18} strokeWidth={1.5} />
+            </button>
+          )}
           <button
             onClick={handleWishlist}
             className={`w-10 h-10 flex items-center justify-center rounded-full bg-white/90 backdrop-blur-md shadow-lg transition-all duration-300 hover:scale-110 ${

@@ -97,6 +97,8 @@ export interface CreateProductPayload {
   sku?: string;
   category: ProductCategory;
   stockQuantity: number;
+  size?: string;
+  occasion?: string;
 }
 
 export interface LoginPayload {

@@ -1,47 +1,44 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import { Edit2, Eye } from "lucide-react";
+import { Edit2, Eye, Trash2 } from "lucide-react";
+import Link from "next/link";
 import { getAllProducts, getApiErrorMessage } from "@/lib/api/client";
-import type { ProductDto } from "@/lib/api/types";
+import { fetchProducts, deleteLocalProduct } from "@/lib/products";
+import type { Product } from "@/app/(main)/collections/productSlice";
 
 interface ProductTableProps {
   searchTerm: string;
 }
 
 const ProductTable: React.FC<ProductTableProps> = ({ searchTerm }) => {
-  const [products, setProducts] = useState<ProductDto[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const loadProducts = async () => {
+    try {
+      setLoading(true);
+      setError("");
+      const data = await fetchProducts({ page: 0, size: 100 });
+      setProducts(data);
+    } catch (loadError) {
+      setError(getApiErrorMessage(loadError, "Məhsullar yüklənmədi."));
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    let cancelled = false;
-
-    const loadProducts = async () => {
-      try {
-        setLoading(true);
-        setError("");
-        const page = await getAllProducts({ page: 0, size: 100 });
-        if (!cancelled) {
-          setProducts(page.content);
-        }
-      } catch (loadError) {
-        if (!cancelled) {
-          setError(getApiErrorMessage(loadError, "Məhsullar yüklənmədi."));
-        }
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      }
-    };
-
     void loadProducts();
-
-    return () => {
-      cancelled = true;
-    };
   }, []);
+
+  const handleDelete = (id: number) => {
+    if (confirm("Bu məhsulu silmək istədiyinizə əminsiniz?")) {
+      deleteLocalProduct(id);
+      void loadProducts();
+    }
+  };
 
   const filteredProducts = useMemo(
     () =>
@@ -111,29 +108,34 @@ const ProductTable: React.FC<ProductTableProps> = ({ searchTerm }) => {
                   <td className="py-4 px-6 text-gray-600">{product.category}</td>
                   <td className="py-4 px-6">
                     <div className="space-y-1">
-                      <p className="font-semibold text-gray-900">{product.price} AZN</p>
-                      <p className="text-sm text-gray-600">Kirayə: {product.dailyPrice} AZN</p>
+                      <p className="font-semibold text-gray-900">{product.sellPrice || product.price} AZN</p>
+                      <p className="text-sm text-gray-600">Kirayə: {product.rentPrice} AZN</p>
                     </div>
                   </td>
                   <td className="py-4 px-6">
                     <span
                       className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${
-                        product.stockQuantity > 0
+                        (product.stockQuantity || 0) > 0
                           ? "bg-green-100 text-green-700"
                           : "bg-red-100 text-red-700"
                       }`}
                     >
-                      {product.stockQuantity} ədəd
+                      {product.stockQuantity || 0} ədəd
                     </span>
                   </td>
-                  <td className="py-4 px-6 text-gray-600">{product.storeName}</td>
+                  <td className="py-4 px-6 text-gray-600">{product.storeName || "Naməlum"}</td>
                   <td className="py-4 px-6">
                     <div className="flex items-center justify-center gap-2">
-                      <button className="p-2 hover:bg-gray-100 rounded-lg transition text-gray-600 hover:text-[#8E6969]">
-                        <Eye size={18} />
-                      </button>
-                      <button className="p-2 hover:bg-gray-100 rounded-lg transition text-gray-600 hover:text-[#8E6969]">
-                        <Edit2 size={18} />
+                      <Link href={`/collections/${product.slug}`} target="_blank">
+                        <button className="p-2 hover:bg-gray-100 rounded-lg transition text-gray-400 hover:text-[#8E6969]">
+                          <Eye size={18} />
+                        </button>
+                      </Link>
+                      <button 
+                        onClick={() => handleDelete(product.id)}
+                        className="p-2 hover:bg-red-50 rounded-lg transition text-gray-400 hover:text-red-500"
+                      >
+                        <Trash2 size={18} />
                       </button>
                     </div>
                   </td>

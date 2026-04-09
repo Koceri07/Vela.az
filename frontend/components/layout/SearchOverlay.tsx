@@ -91,13 +91,12 @@ const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose, products
                 {t("search.popular")}
               </h3>
               <div className="flex flex-wrap gap-3">
-                {["Ziyafət Geyimi", "Gəlinlik", "Atlas", "Kostyum", "Uşaq"].map((tag) => (
+                {["evening", "bridal", "satin", "suit", "kids"].map((tagKey) => (
                   <button
-                    key={tag}
-                    onClick={() => setQuery(tag)}
+                    key={tagKey} onClick={() => setQuery(t("search.tags." + tagKey))}
                     className="px-6 py-3 bg-stone-50 hover:bg-stone-100 text-stone-600 text-sm font-bold rounded-full transition-all border border-stone-100 hover:border-stone-200"
                   >
-                    {tag}
+                    {t("search.tags." + tagKey)}
                   </button>
                 ))}
               </div>

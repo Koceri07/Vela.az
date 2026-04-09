@@ -1,10 +1,10 @@
 "use client";
 
-// import React-a ehtiyac yoxdur
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/context/LanguageContext";
+import { fetchProducts } from "@/lib/products";
 
 interface Category {
   title: string;
@@ -16,33 +16,46 @@ interface Category {
 const PopularCategories = () => {
   const router = useRouter();
   const { t } = useLanguage();
+  const [counts, setCounts] = useState({ bridal: 0, evening: 0, mens: 0, kids: 0 });
+
+  useEffect(() => {
+    fetchProducts({ page: 0, size: 50 }).then(data => {
+      let bridal = 0, evening = 0, mens = 0, kids = 0;
+      data.forEach(p => {
+        if (p.backendCategory === "KIDS" || p.category === "kids") kids++;
+        else if (p.backendCategory === "MEN" || p.category === "mens") mens++;
+        else if (p.backendCategory === "WOMEN" || p.category === "bridal" || p.category === "evening") {
+          if (p.occasion === "Ziyafət" || p.category === "evening") evening++;
+          else bridal++;
+        }
+      });
+      setCounts({ bridal, evening, mens, kids });
+    }).catch(() => {});
+  }, []);
+
   const categories: Category[] = [
     {
       title: t("home.cat_bride"),
-      count: 124,
-      image:
-        "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&h=500",
+      count: counts.bridal,
+      image: "/mainPage/cat-wedding.jpg",
       link: "/collections?cat=bridal",
     },
     {
       title: t("home.cat_evening"),
-      count: 256,
-      image:
-        "https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=400&h=500",
+      count: counts.evening,
+      image: "/mainPage/cat-gala.jpg",
       link: "/collections?cat=evening",
     },
     {
       title: t("home.cat_mens"),
-      count: 89,
-      image:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&h=500",
+      count: counts.mens,
+      image: "/mainPage/cat-men.jpg",
       link: "/collections?cat=mens",
     },
     {
       title: t("home.cat_kids"),
-      count: 67,
-      image:
-        "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?auto=format&fit=crop&w=400&h=500",
+      count: counts.kids,
+      image: "/mainPage/cat-kids.jpg",
       link: "/collections?cat=kids",
     },
   ];
@@ -72,10 +85,11 @@ const PopularCategories = () => {
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/55 via-black/10 to-transparent" />
+              <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="absolute bottom-4 left-4 text-white">
-                <h3 className="text-xl font-semibold">{cat.title}</h3>
-                <p className="text-sm">{cat.count} {t("home.products_count")}</p>
+                <h3 className="text-xl font-semibold drop-shadow-sm">{cat.title}</h3>
+                <p className="text-sm text-white/85">{cat.count} {t("home.products_count")}</p>
               </div>
             </div>
           ))}

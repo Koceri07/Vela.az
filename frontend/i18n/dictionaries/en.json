@@ -50,7 +50,9 @@
     "test_1": "Thanks to VELA I look different at every wedding. The rental system works great!",
     "test_2": "Finding a family outfit has never been this easy. The kids loved it too!",
     "test_3": "The suit quality was perfect. Renting instead of buying was the best decision.",
-    "age": "years old"
+    "age": "years old",
+    "store_title": "Browse Stores",
+    "store_sub": "Top boutiques and sellers in one place"
   },
   "cart": {
     "title": "My Cart",
@@ -82,7 +84,10 @@
     "wedding": "Wedding",
     "party": "Party",
     "ceremony": "Ceremony",
-    "not_found": "No products found matching the selected filters."
+    "not_found": "No products found matching the selected filters.",
+    "assistant_size": "What size do you need?",
+    "assistant_price": "What is your budget?",
+    "assistant_occasion": "What event are you preparing for?"
   },
   "search": {
     "placeholder": "What are you looking for? (e.g.: Atlas, Bridal...)",
@@ -91,13 +96,13 @@
     "per_rent": "/ rent",
     "view_product": "View product",
     "not_found": "No products found for",
-    "tags": [
-      "Evening Wear",
-      "Bridal",
-      "Atlas",
-      "Suit",
-      "Kids"
-    ]
+    "tags": {
+      "evening": "Evening Gown",
+      "bridal": "Bridal",
+      "satin": "Satin",
+      "suit": "Suit",
+      "kids": "Kids"
+    }
   },
   "product": {
     "new": "NEW",
@@ -178,7 +183,8 @@
     "agreement_text_3": "and",
     "agreement_text_4": "Terms of Use",
     "agreement_text_5": "terms.",
-    "submit": "Post Listing"
+    "submit": "Post Listing",
+    "cat_none": "None / Other"
   },
   "create_store": {
     "success_title": "Your application has been received!",
@@ -214,78 +220,8 @@
     "name": "Name",
     "phone": "Phone",
     "email": "Email",
-    "message": "Message",
+    "message": "Your message",
     "send": "Send"
-  },
-  "privacy": {
-    "title": "Privacy Policy",
-    "desc": "Your privacy is important to us.",
-    "section_1": "Collected Information",
-    "section_1_1": "During registration:",
-    "section_1_1_text": "name, surname, phone number, email address.",
-    "section_1_2": "When placing a listing:",
-    "section_1_2_text": "product information, photos, address (optional).",
-    "section_1_3": "When accessing the site:",
-    "section_1_3_text": "IP address, browser type, device information (for security and analytics).",
-    "section_2": "Use of Information",
-    "section_2_1": "Your phone number is displayed under your listing so buyers can contact you.",
-    "section_2_2": "Your email is used only for technical notifications and important alerts.",
-    "section_2_3": "We do not sell your personal information to third parties!",
-    "section_3": "Data Protection",
-    "section_3_text": "All data is transmitted through encrypted channels. Only our technical support team has access to the data.",
-    "section_4": "Your Rights",
-    "section_4_text": "You can update your information or delete your account at any time from your personal dashboard. To delete your data, contact us at vela7az@gmail.com.",
-    "section_5": "Cookies",
-    "section_5_text": "Our site uses cookies to improve functionality. You can delete or block these files in your browser, but this may affect some features.",
-    "consent": "By registering on the site, you consent to your personal information being processed according to the terms of this policy."
-  },
-  "terms": {
-    "title": "Terms of Use",
-    "desc": "This document applies to buyers, sellers, and all site visitors.",
-    "section_1": "General Terms",
-    "section_1_text": "Vela.az (hereinafter \"Platform\") is an online resource that allows users to freely post ads for event clothing and view these ads.",
-    "section_1_2": "The Platform is not a party to any agreement between buyer and seller. Purchase, rental, deposit, delivery and other terms are entirely matters agreed upon by users.",
-    "section_1_3": "By using the Platform, you confirm that you have read and accepted these terms.",
-    "section_2": "Registration and Account",
-    "section_2_text": "You must register to post listings. You must provide correct name, surname, contact number and email.",
-    "section_2_2": "Do not share your account with others. You are responsible for all activities on your account.",
-    "section_2_3": "Persons under 18 can only register with parental permission.",
-    "section_3": "User Activity",
-    "section_3_text": "It is strictly prohibited to post listings that are false, insulting, sexual, racist, controversial, violent or illegal.",
-    "section_4": "Communication between Buyer and Seller",
-    "section_4_1": "Under the ad, there will be the seller's phone number or message form. All negotiations, agreements, payments and delivery are carried out directly between the parties.",
-    "section_4_2": "In rental transactions, price, period, deposit, penalties and return terms must be agreed in writing (WhatsApp, SMS and so on) by the parties. The Platform is not responsible for the implementation of these terms.",
-    "section_5": "Limitation of Liability",
-    "section_5_1": "The Platform does not guarantee the quality, cleanliness, condition or timely delivery of the product sold or rented.",
-    "section_5_2": "Financial losses, damages, deception and other problems arising between users are resolved only between the parties themselves.",
-    "section_5_3": "The Platform may be temporarily unavailable due to technical reasons (server problems, etc.). We do not bear responsibility for losses incurred in such cases.",
-    "section_6": "Changes",
-    "section_6_text": "These terms may be updated from time to time. Changes take effect from the moment they are published on the site.",
-    "section_7": "Contact",
-    "section_7_text": "If you have questions, contact us at vela7az@gmail.com."
-  },
-  "seller_agreement": {
-    "title": "Seller Agreement",
-    "desc": "Please review this agreement before posting a listing on the site.",
-    "section_1": "Seller Responsibilities",
-    "section_1_text": "The seller is responsible for the accuracy and clarity of the information in the posting. You must accurately describe the condition, size and other characteristics of the item you are selling.",
-    "section_2": "Payments and Fees",
-    "section_2_text": "While basic listing service is free, special services (featured listing, VIP listing, etc.) may have fees.",
-    "section_3": "Listing Duration",
-    "section_3_text": "Listings are posted for 30 days. You can delete or renew your listing at any time.",
-    "section_4": "Review System",
-    "section_4_text": "Buyers can rate sellers. Negative reviews can be appealed, but you always have the right to respond.",
-    "section_5": "Prohibitions",
-    "section_5_text": "Technical prohibitions include: illegal product listings, fake reviews, fraud, non-safe items, and counterfeit sales.",
-    "image_requirements": "Image Requirements",
-    "image_requirement_1_title": "Clarity:",
-    "image_requirement_1_text": "Images should be clear, high quality, and in focus.",
-    "image_requirement_2_title": "Background:",
-    "image_requirement_2_text": "Prefer a clean white or light background without distracting objects.",
-    "image_requirement_3_title": "Right to Reject:",
-    "image_requirement_3_text": "If images do not meet requirements, the platform may refuse to publish the item.",
-    "phone": "077 127 97 59",
-    "email": "vela7az@gmail.com"
   },
   "privacy": {
     "title": "Privacy Policy",
@@ -308,23 +244,6 @@
     "section_5": "Cookies",
     "section_5_text": "Our site uses cookies to improve functionality. You can delete or block these files in your browser, but this may affect some features.",
     "consent": "By registering on the site, you consent to the processing of your personal information in accordance with the conditions of this policy."
-  },
-  "about": {
-    "title": "About Us",
-    "subtitle": "Welcome to VELA - the platform where every style finds its moment",
-    "what_is": "What is Vela.az?",
-    "what_is_desc1": "Vela is an online classifieds platform in Azerbaijan for selling, buying, or renting clothes for weddings, engagements, birthdays, and other events.",
-    "what_is_desc2": "We bring sellers and buyers together. The seller shows their clothing in a listing, and the buyer sees the listing and contacts the seller directly. All agreements (price, rental period, deposit, delivery, return) are made directly between the seller and the buyer.",
-    "we_do": "What We Do",
-    "we_do_1": "We allow sellers to post listings for free.",
-    "we_do_2": "We provide filters, search, and description tools so buyers can easily find the clothing they are looking for.",
-    "we_do_3": "We put simple rules in place for the safety of both parties.",
-    "we_dont": "What We Don’t Do",
-    "we_dont_1": "We do not store, clean, or deliver clothing.",
-    "we_dont_2": "We are not responsible for sales and rental transactions.",
-    "we_dont_3": "We charge no commission (for now).",
-    "goal": "Our Goal",
-    "goal_desc": "Our goal is to provide a reliable, simple, and clean online space for event clothing."
   },
   "terms": {
     "title": "Terms of Use",
@@ -352,6 +271,46 @@
     "section_6_text": "These terms may be updated from time to time. Amendments shall take effect from the date they are posted on the site.",
     "section_7": "Contact",
     "section_7_text": "For your questions: vela7az@gmail.com"
+  },
+  "seller_agreement": {
+    "title": "Seller Agreement",
+    "desc": "Please review this agreement before posting a listing on the site.",
+    "section_1": "Seller Responsibilities",
+    "section_1_text": "The seller is responsible for the accuracy and clarity of the information in the posting. You must accurately describe the condition, size and other characteristics of the item you are selling.",
+    "section_2": "Payments and Fees",
+    "section_2_text": "While basic listing service is free, special services (featured listing, VIP listing, etc.) may have fees.",
+    "section_3": "Listing Duration",
+    "section_3_text": "Listings are posted for 30 days. You can delete or renew your listing at any time.",
+    "section_4": "Review System",
+    "section_4_text": "Buyers can rate sellers. Negative reviews can be appealed, but you always have the right to respond.",
+    "section_5": "Prohibitions",
+    "section_5_text": "Technical prohibitions include: illegal product listings, fake reviews, fraud, non-safe items, and counterfeit sales.",
+    "image_requirements": "Image Requirements",
+    "image_requirement_1_title": "Clarity:",
+    "image_requirement_1_text": "Images should be clear, high quality, and in focus.",
+    "image_requirement_2_title": "Background:",
+    "image_requirement_2_text": "Prefer a clean white or light background without distracting objects.",
+    "image_requirement_3_title": "Right to Reject:",
+    "image_requirement_3_text": "If images do not meet requirements, the platform may refuse to publish the item.",
+    "phone": "077 127 97 59",
+    "email": "vela7az@gmail.com"
+  },
+  "about": {
+    "title": "About Us",
+    "subtitle": "Welcome to VELA - the platform where every style finds its moment",
+    "what_is": "What is Vela.az?",
+    "what_is_desc1": "Vela is an online classifieds platform in Azerbaijan for selling, buying, or renting clothes for weddings, engagements, birthdays, and other events.",
+    "what_is_desc2": "We bring sellers and buyers together. The seller shows their clothing in a listing, and the buyer sees the listing and contacts the seller directly. All agreements (price, rental period, deposit, delivery, return) are made directly between the seller and the buyer.",
+    "we_do": "What We Do",
+    "we_do_1": "We allow sellers to post listings for free.",
+    "we_do_2": "We provide filters, search, and description tools so buyers can easily find the clothing they are looking for.",
+    "we_do_3": "We put simple rules in place for the safety of both parties.",
+    "we_dont": "What We Don’t Do",
+    "we_dont_1": "We do not store, clean, or deliver clothing.",
+    "we_dont_2": "We are not responsible for sales and rental transactions.",
+    "we_dont_3": "We charge no commission (for now).",
+    "goal": "Our Goal",
+    "goal_desc": "Our goal is to provide a reliable, simple, and clean online space for event clothing."
   },
   "admin": {
     "dashboard": {
@@ -418,5 +377,17 @@
       "users": "Users",
       "settings": "Settings"
     }
+  },
+  "category": {
+    "gelinlikler": "Bridal Dresses",
+    "kostyumlar": "Men's Suits",
+    "xanim_geyimleri": "Women's Clothing",
+    "usaq_geyimleri": "Kids' Clothing",
+    "hero_d": "Perfect clothing collection for every taste and every event",
+    "count_pre": "Total ",
+    "count_post": " products found",
+    "empty": "No products in this category yet.",
+    "not_found_t": "Category not found",
+    "not_found_d": "The page you are looking for does not exist or has been removed."
   }
 }

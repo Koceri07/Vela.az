@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import {
+  Menu,
+  X,
   Search,
   Heart,
   ShoppingBag,
@@ -22,6 +23,7 @@ import type { Product } from "@/app/(main)/collections/productSlice";
 const Header = () => {
   const { cart, wishlist } = useCart();
   const [isSearchOpen, setIsSearchOpen] = React.useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [products, setProducts] = React.useState<Product[]>([]);
   const { language, setLanguage, t } = useLanguage();
 
@@ -31,6 +33,22 @@ const Header = () => {
       .catch(() => setProducts([]));
   }, []);
 
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [isMobileMenuOpen]);
+
+  const navLabel = (href: string) =>
+    t("nav." + (href === "/" ? "home" : href.replace("/", "")));
+
   return (
     <header className="w-full bg-white border-b border-gray-100">
       <SearchOverlay
@@ -38,20 +56,27 @@ const Header = () => {
         onClose={() => setIsSearchOpen(false)}
         products={products}
       />
-      <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
-        <div className="shrink-0">
-          <Link href="/">
-            <Image
-              src="/mainPage/logo.jpg"
-              alt="VELA"
-              width={160}
-              height={56}
-              className="h-14 w-auto object-contain"
-            />
-          </Link>
+      <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between relative">
+        <div className="flex items-center gap-3 lg:gap-0">
+          <button
+            type="button"
+            aria-label={isMobileMenuOpen ? "Menyunu bağla" : "Menyunu aç"}
+            aria-expanded={isMobileMenuOpen}
+            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+            className="text-gray-700 hover:text-black transition z-[101] relative"
+          >
+            {isMobileMenuOpen ? <X size={28} strokeWidth={1.8} /> : <Menu size={28} strokeWidth={1.8} />}
+          </button>
         </div>
 
-        <nav className="hidden md:flex items-center space-x-8">
+        <Link
+          href="/"
+          className="absolute left-1/2 -translate-x-1/2 font-serif text-[2rem] sm:text-[2.25rem] font-semibold tracking-[0.22em] text-[#231F20] z-10"
+        >
+          VELA
+        </Link>
+
+        <nav className="hidden">
           {navigation.map((item) => (
             <Link
               key={item.href}
@@ -62,7 +87,7 @@ const Header = () => {
                   : "text-gray-700 hover:text-black"
               }`}
             >
-              {t("nav." + (item.href === "/" ? "home" : item.href.replace("/", "")))}
+              {navLabel(item.href)}
             </Link>
           ))}
 
@@ -96,8 +121,8 @@ const Header = () => {
           </div>
         </nav>
 
-        <div className="flex items-center space-x-5 lg:space-x-6">
-          <div className="relative group hidden sm:flex items-center">
+        <div className="flex items-center space-x-3 sm:space-x-4 lg:space-x-6">
+          <div className="hidden">
             <button className="flex items-center space-x-1 text-xs font-semibold text-gray-600 hover:text-black transition uppercase py-2">
               <Globe size={16} strokeWidth={1.5} className="text-gray-500" />
               <span className="mt-[1px]">{language}</span>
@@ -132,7 +157,7 @@ const Header = () => {
             </div>
           </div>
 
-          <div className="hidden lg:flex items-center border-l border-r border-gray-200 px-5 lg:px-6 space-x-4">
+          <div className="hidden">
             <Link
               href="/login"
               className="flex items-center space-x-1.5 text-xs font-medium text-gray-600 hover:text-black transition uppercase"
@@ -150,7 +175,11 @@ const Header = () => {
           </div>
 
           <div className="flex items-center space-x-4 text-gray-700">
-            <button onClick={() => setIsSearchOpen(true)} className="hover:text-black transition">
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="inline-flex hover:text-black transition"
+              aria-label="Axtar"
+            >
               <Search size={22} strokeWidth={1.2} />
             </button>
             <Link
@@ -182,6 +211,84 @@ const Header = () => {
           </div>
         </div>
       </div>
+
+      {isMobileMenuOpen && (
+        <div className="absolute top-20 left-0 w-full sm:w-80 sm:left-4 z-[100] border border-t-0 border-gray-100 bg-white shadow-[0_18px_40px_-22px_rgba(0,0,0,0.22)] rounded-b-xl">
+          <div className="max-w-7xl mx-auto px-4 py-5 flex flex-col gap-2">
+            {navigation.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="py-3 text-sm font-semibold uppercase tracking-[0.18em] text-gray-700 border-b border-gray-100 last:border-b-0"
+              >
+                {navLabel(item.href)}
+              </Link>
+            ))}
+
+            <Link
+              href="/create-store"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="mt-2 flex items-center justify-center gap-1.5 border border-[#8E6969] text-[#8E6969] text-xs font-bold uppercase tracking-widest px-5 py-3 rounded-full hover:bg-[#8E6969] hover:text-white transition-all duration-300"
+            >
+              {t("header.create_store")}
+            </Link>
+            <Link
+              href="/create-listing"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex items-center justify-center gap-1.5 bg-[#8E6969] text-white text-xs font-bold uppercase tracking-widest px-5 py-3 rounded-full hover:bg-[#725454] transition-all duration-300"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              {t("header.create_listing")}
+            </Link>
+
+            <div className="mt-3 flex items-center justify-between gap-4 border-t border-gray-100 pt-4">
+              <div className="flex items-center gap-2">
+                {(["AZ", "RU", "EN"] as const).map((lang) => (
+                  <button
+                    key={lang}
+                    type="button"
+                    onClick={() => setLanguage(lang)}
+                    className={`rounded-full border px-3 py-1.5 text-xs font-bold uppercase transition ${
+                      language === lang
+                        ? "border-[#8E6969] bg-[#8E6969] text-white"
+                        : "border-gray-200 text-gray-600"
+                    }`}
+                  >
+                    {lang}
+                  </button>
+                ))}
+              </div>
+
+              <div className="flex items-center gap-4 text-gray-600">
+                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} aria-label={t("header.login")}>
+                  <User size={19} strokeWidth={1.7} />
+                </Link>
+                <Link
+                  href="/register"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  aria-label={t("header.register")}
+                >
+                  <UserPlus size={19} strokeWidth={1.7} />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 };
